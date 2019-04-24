@@ -1,0 +1,10 @@
+
+hangman_version2.py
+words.py,cover
+hangman.py,cover
+hangman.py
+draw_hangman.py
+__pycache__/words.cpython-36.pyc
+__pycache__/draw_hangman.cpython-36.pyc
+.coverage
+hangman.py

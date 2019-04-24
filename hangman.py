@@ -3,13 +3,13 @@ import string
 
 WORDLIST_FILENAME = "words.txt"
 
-def choose_word(wordlist):
-    """
-    wordlist (list): list of words (strings)
+# def choose_word(wordlist):
+#     """
+#     wordlist (list): list of words (strings)
 
-    Returns a word from wordlist at random
-    """
-    return random.choice(wordlist)
+#     Returns a word from wordlist at random
+#     """
+#     return random.choice(wordlist)
 
 def hangman():
     wordlist = load_words()
@@ -19,6 +19,8 @@ def hangman():
 
     # Een random woord uit de lijst halen.
     word = wordlist[random.randint(0,len(wordlist) - 1)]
+    word = 'kaas'
+
     # introductie van 'hangman'
     print("Welcome to the game, Hangman!")
     print("I am thinking of a word that is {} letters long.".format(len(word)))
