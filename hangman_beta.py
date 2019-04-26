@@ -23,6 +23,8 @@ class Hangman(object):
 		guessed_character = self.promptInputUser()
 		self.processInput(guessed_character)
 		if self.interactive:
+			print(u'[ ' + '♥ '*self.lives + '  '*self.livesLost()+']')
+
 			self.printHangman()
 			self.printLine()
 			self.printStatus()
@@ -60,20 +62,20 @@ class Hangman(object):
 					self.finished = True
 					self.won = True
 					if self.interactive:
-						print("\nYou win! The word was: {}".format(self.word))
+						print("\nYou win! The word was: {}".format(self.word.upper()))
 				else:
 					if self.interactive:
-						print("Good guess! \"{}\" is part of the word!".format(guessed_character))
+						print("Good guess! \"{}\" is part of the word!".format(guessed_character.upper()))
 			else:
 				if self.interactive:
-					print("\"{}\" is not part of the word! You lose one life...".format(guessed_character))
+					print(u"Aah, too bad! \"{}\" is not part of the word! -♥".format(guessed_character.upper()))
 
 				self.lives -= 1
 				if not self.alive():
 					self.finished = True
 					self.won = False
 					if self.interactive:
-						print("YOU HANG... The word was: {}".format(self.word))
+						print("YOU HANG... The word was: {}".format(self.word.upper()))
 
 	def play(self):
 		self.printWelcome()
@@ -91,7 +93,10 @@ class Hangman(object):
 
 	# Interactive Functions
 	def promptInputUser(self):
+
 		guessed_character = input("Please guess a letter: ").lower()
+		self.printLine()
+
 		while not self.validUserInput(guessed_character):
 			print("False input, try again.")
 			return self.promptInputUser()
@@ -108,13 +113,16 @@ class Hangman(object):
 
 	def getWelcome(self):
 		# print("You have " + str(self.max_lives) + " lives guess it...")
-		return "Welcome to hangman!\n\nI'm thinking of a word that is {} characters long.".format(len(self.word))
+		return "\n\n\nWELCOME TO HANGMAN!\n\nI'm thinking of a word that is {} characters long.\n\n".format(len(self.word))
 
 	def printWelcome(self):
 		print(self.getWelcome())
 
 	def getStatus(self):
-		return "Word: {}\nGuessed characters: {}\n".format(self.visible_word, self.guessed_characters)
+		return "Word: {}\nGuessed characters: {}\n".format(
+			''.join([character.upper()+' ' if character.isalpha() else '_ ' for character in list(self.visible_word)]), 
+			"[ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]"
+			)
 
 	def printStatus(self):
 		print(self.getStatus())
