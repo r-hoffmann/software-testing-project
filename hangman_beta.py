@@ -1,114 +1,97 @@
-word = 'kaas'
-alphabet = "abcdefghijklmnopqrstuvwxyz"
-VisibleWord = "_" * len(word)
-guessed_characters = ""
-MAX_LIVES = 9
-lives = MAX_LIVES
-correct = True
+import os
+class Hangman(object):
+	def __init__(self, max_lives=9, word=None):
+		self.alphabet = "abcdefghijklmnopqrstuvwxyz"
+		if word==None:
+			self.word = self.getWord()
+		else:
+			self.word = word
 
-def main():
-	greeting()
-	print_game_info(word)
-	while(correct):
-		turn()
+		self.visible_word = "".join(["_" for w in self.word])
+		self.guessed_characters = ''
+		self.max_lives = max_lives
+		self.alive = True
 
-def line(n=50):
-	print("-" * n + "\n") 
+	def greeting(self):
+		print("\n\n\nWELCOME TO HANGMAN!")
+	
+	def getWord(self):
+		return 'kaas'
 
-def greeting():
-	print("Welcome to hangman!\n")
+	def printGameInfo(self):
+		print("\n\nI'm thinking of a word that is {} characters long \n\n{}\n\n".format(len(self.word), self.visible_word))
+		print("Guessed characters: {}".format(self.guessed_characters))
 
-def print_game_info(word):
-	global guessed_characters
-	print("The word I'm thinking of is " + str(len(word)) + " characters long.")
-	print("You have " + str(MAX_LIVES) + " turns to guess the word.")
-	line()
 
-def turn():
-	status()
-	print()
-	prompt_input_user()
+	def promptInputUser(self):
+		guessed_character = input("Please guess a letter: ").lower()
+		self.check_input_user(guessed_character)
 
-def prompt_input_user():
-	guessed_character = input("Please guess a letter: ").lower()
-	check_input_user(guessed_character)
+	def check_input_user(self, guessed_character):
+		guessed_word = ''.join(x for x in self.visible_word if x.isalpha())
 
-def status():
-	print("Word: " + VisibleWord)
-	print("Guessed characters: " + guessed_characters)
+		if guessed_character not in self.alphabet or not len(guessed_character) == 1:
+			print("         False input, try again. My word: {}".format(visible_word))
+		elif guessed_character in self.guessed_characters:
+			print("You've already tried this character. Choose another.")
+		elif guessed_character in self.word:
+			self.guessed_characters += guessed_character
 
-def check_input_user(character):
-	global VisibleWord
-	global guessed_characters
-	global lives
-	global correct
+			temp = list(self.visible_word)
+			for i, w in enumerate(self.word):
+				if w == guessed_character:
+					temp[i] = guessed_character
+				
+			self.visible_word = ''.join(temp)
 
-	# guessed_word = ''.join(x for x in VisibleWord if x.isalpha())
-
-	if character not in alphabet or not len(character) == 1:
-		print("False input, try again.")
-		prompt_input_user()
-	elif character in guessed_characters:
-		print("You've already tried \"" + character + "\", please choose another.")
-		prompt_input_user()
-	elif character in word:
-		
-		guessed_characters += character
-
-		temp = list(VisibleWord)
-		for i in range(len(word)):
-			if word[i:i+1] == character:
-				temp[i] = character
-			elif VisibleWord[i:i+1].isalpha():
-				pass
+			if self.visible_word == self.word:
+				self.alive = False
+				print("\n\nThats it! The word was: {}".format(self.visible_word))
 			else:
 				pass
-			
-		VisibleWord = "".join(x for x in temp)
+				# print('You guessed a correct letter!\n Look at your guessed word so far...: {}'.format(self.visible_word))
 
-		if VisibleWord == word:
-			correct = False
-			print("\n\nThats it! The word was: " + VisibleWord)
 		else:
-			print("Good guess! \"" + character + "\" is part of the word!")
+			print("That was not correct! You lose one live.")
+			self.guessed_characters += guessed_character
 
-		draw_hangman((MAX_LIVES - lives))
+			self.lives -= 1
+			self.draw_hangman(self.max_lives - self.lives)
 
-	else:
-		print("\"" + character + "\" is not part of the word! You lose one live...")
-		guessed_characters += character
+			if self.lives < 1:
+				print("YOU HANG...")
+				self.alive = False
 
-		lives -= 1
-		draw_hangman((MAX_LIVES - lives))
+	def draw_hangman(self, errors):
+		hangman = ''
+		if errors == 1:
+			hangman = "\n" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
+		elif errors == 2:
+			hangman = "\n_________" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
+		elif errors == 3:
+			hangman =  "\n________" + "\n|       |" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
+		elif errors == 4:
+			hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
+		elif errors == 5:
+			hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|       |" + "\n|" + "\n|" + "\n|_______________________\n"
+		elif errors == 6:
+			hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|      /|" + "\n|" + "\n|" + "\n|_______________________\n"
+		elif errors == 7:
+			hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|      /|\\" + "\n|" + "\n|" + "\n|_______________________\n"
+		elif errors == 8:
+			hangman = "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|        ^" +  "\n|                 " + "\n|_______________________\n"
+		elif errors == 9:
+			hangman = "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|        ^" + " \n|       / \\      " + "\n|_______________________\n"
+		print(hangman)
 
-		if lives < 1:
-			print("YOU HANG...")
-			correct = False
-	# line()
-
-def draw_hangman(errors):
-	hangman = ''
-	if errors == 1:
-		hangman = "\n" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
-	elif errors == 2:
-		hangman = "\n_________" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
-	elif errors == 3:
-		hangman =  "\n________" + "\n|       |" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
-	elif errors == 4:
-		hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
-	elif errors == 5:
-		hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|       |" + "\n|" + "\n|" + "\n|_______________________\n"
-	elif errors == 6:
-		hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|      /|" + "\n|" + "\n|" + "\n|_______________________\n"
-	elif errors == 7:
-		hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|      /|\\" + "\n|" + "\n|" + "\n|_______________________\n"
-	elif errors == 8:
-		hangman = "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|        ^" +  "\n|                 " + "\n|_______________________\n"
-	elif errors == 9:
-		hangman = "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|        ^" + " \n|       / \\      " + "\n|_______________________\n"
-	print(hangman)
+	def play(self):
+		self.lives = self.max_lives
+		self.greeting()
+		while self.alive:
+			self.printGameInfo()
+			self.promptInputUser()
 			
 
-
-
-main()
+if __name__ == '__main__':
+	hangman = Hangman()
+	hangman.play()
