@@ -1,10 +1,8 @@
 import os, string
 
-def line(n=50):
-	print("-" * n + "\n") 
-
 class Hangman(object):
-	def __init__(self, max_lives=9, word=None):
+	def __init__(self, interactive=False, max_lives=9, word=None):
+		self.interactive=interactive
 		self.alphabet = string.ascii_lowercase
 		if word == None:
 			self.word = self.getWord()
@@ -14,29 +12,83 @@ class Hangman(object):
 		self.visible_word = "".join(["_" for w in self.word])
 		self.guessed_characters = ''
 		self.max_lives = max_lives
-		self.alive = True
+		self.lives = self.max_lives
+		self.finished = False
 
+	# Functional Functions
 	def getWord(self):
 		return "kaas"
 
-	def printWelcome(self):
-		print("Welcome to hangman!\n")
-		print("I'm thinking of a word that is {} characters long.".format(len(self.word)))
-		# print("You have " + str(self.max_lives) + " lives guess it...")
-		line()
-
-	def status(self):
-		print("Word: {}".format(self.visible_word))
-		print("Guessed characters: {}".format(self.guessed_characters))
-
 	def turn(self):
-		self.status()
-		print()
 		guessed_character = self.promptInputUser()
 		self.processInput(guessed_character)
-		self.draw_hangman(self.max_lives - self.lives)
-		line()
+		if self.interactive:
+			self.printHangman()
+			self.printLine()
+			self.printStatus()
+	
+	def characterAlreadyGuessed(self, guessed_character):
+		if guessed_character in self.guessed_characters:
+			if self.interactive:
+				print("You've already tried \"{}\", please choose another.".format(guessed_character))
+			return True
+		return False
 
+	def characterInWord(self, guessed_character):
+		return guessed_character in self.word
+
+	def wordCompleted(self):
+		return self.visible_word == self.word
+
+	def updateVisibleWord(self):
+		self.visible_word = ''
+		for i, w in enumerate(self.word):
+			if w in self.guessed_characters:
+				self.visible_word += w
+			else:
+				self.visible_word += '_'
+
+	def processInput(self, guessed_character):	
+		if self.characterAlreadyGuessed(guessed_character):
+			self.promptInputUser()
+		else:
+			self.guessed_characters += guessed_character
+			if self.characterInWord(guessed_character):
+				self.updateVisibleWord()
+
+				if self.wordCompleted():
+					if self.interactive:
+						print("\nYou win! The word was: {}".format(self.word))
+						self.finished = True
+						self.won = True
+				else:
+					if self.interactive:
+						print("Good guess! \"{}\" is part of the word!".format(guessed_character))
+			else:
+				if self.interactive:
+					print("\"{}\" is not part of the word! You lose one life...".format(guessed_character))
+
+				self.lives -= 1
+				if not self.alive() and self.interactive:
+					print("YOU HANG... The word was: {}".format(self.word))
+					self.finished = True
+					self.won = False
+
+	def play(self):
+		self.printWelcome()
+		while not self.wordCompleted() and self.alive():
+			self.turn()
+			if self.interactive:
+				self.drawInterface()
+
+	def livesLost(self):
+		return self.max_lives - self.lives
+	
+	def alive(self):
+		return self.lives > 0
+	# /Functional Functions
+
+	# Interactive Functions
 	def promptInputUser(self):
 		guessed_character = input("Please guess a letter: ").lower()
 		while not self.validUserInput(guessed_character):
@@ -47,65 +99,48 @@ class Hangman(object):
 	def validUserInput(self, guessed_character):
 		return len(guessed_character) == 1 and guessed_character in self.alphabet
 
-	def processInput(self, guessed_character):	
-		if guessed_character in self.guessed_characters:
-			print("You've already tried \"{}\", please choose another.".format(guessed_character))
-			self.promptInputUser()
-		elif guessed_character in self.word:
-			self.guessed_characters += guessed_character
+	def getLine(self, n=50):
+		return "-" * n + "\n"
 
-			temp = list(self.visible_word)
-			for i, w in enumerate(self.word):
-				if w == guessed_character:
-					temp[i] = guessed_character
-				
-			self.visible_word = ''.join(temp)
+	def printLine(self, n=50):
+		print(self.getLine(n))
 
-			if self.visible_word == self.word:
-				self.alive = False
-				print("\nYou win! The word was: {}".format(self.visible_word))
-			else:
-				print("Good guess! \"{}\" is part of the word!".format(guessed_character))
+	def getWelcome(self):
+		# print("You have " + str(self.max_lives) + " lives guess it...")
+		return "Welcome to hangman!\n\nI'm thinking of a word that is {} characters long.".format(len(self.word))
 
-		else:
-			print("\"{}\" is not part of the word! You lose one live...".format(guessed_character))
-			self.guessed_characters += guessed_character
+	def printWelcome(self):
+		print(self.getWelcome())
 
-			self.lives -= 1
+	def getStatus(self):
+		return "Word: {}\nGuessed characters: {}\n".format(self.visible_word, self.guessed_characters)
 
-			if self.lives < 1:
-				print("YOU HANG...")
-				self.alive = False
+	def printStatus(self):
+		print(self.getStatus())
 
-	def draw_hangman(self, errors):
-		hangman = ''
-		if errors == 1:
-			hangman = "\n" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
-		elif errors == 2:
-			hangman = "\n_________" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
-		elif errors == 3:
-			hangman =  "\n________" + "\n|       |" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
-		elif errors == 4:
-			hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
-		elif errors == 5:
-			hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|       |" + "\n|" + "\n|" + "\n|_______________________\n"
-		elif errors == 6:
-			hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|      /|" + "\n|" + "\n|" + "\n|_______________________\n"
-		elif errors == 7:
-			hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|      /|\\" + "\n|" + "\n|" + "\n|_______________________\n"
-		elif errors == 8:
-			hangman = "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|        ^" +  "\n|                 " + "\n|_______________________\n"
-		elif errors == 9:
-			hangman = "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|        ^" + " \n|       / \\      " + "\n|_______________________\n"
-		print(hangman)
+	def getHangman(self):
+		printed_hangman = {
+			0: "",
+			1: "\n" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n",
+			2: "\n_________" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n",
+			3: "\n_________" + "\n|        |" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n",
+			4: "\n_________" + "\n|        |" + "\n|        O" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n",
+			5: "\n_________" + "\n|        |" + "\n|        O" + "\n|        |" + "\n|" + "\n|" + "\n|_______________________\n",
+			6: "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|" + "\n|" + "\n|" + "\n|_______________________\n",
+			7: "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|" + "\n|" + "\n|_______________________\n",
+			8: "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|        ^" +  "\n|                 " + "\n|_______________________\n",
+			9: "\n_________" + "\n|        |" + "\n|        O" + "\n|       /|\\" + "\n|        ^" + " \n|       / \\      " + "\n|_______________________\n"
+		}
+		return printed_hangman[self.livesLost()]
 
-	def play(self):
-		self.lives = self.max_lives
-		self.printWelcome()
-		while self.alive:
-			self.turn()
-			
+	def printHangman(self):
+		print(self.getHangman())
+	
+	def drawInterface(self):
+		pass
+	# /Interactive Functions
+	
 
 if __name__ == '__main__':
-	hangman = Hangman()
+	hangman = Hangman(True)
 	hangman.play()
