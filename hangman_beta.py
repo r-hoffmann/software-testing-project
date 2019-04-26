@@ -1,32 +1,41 @@
 word = 'kaas'
 alphabet = "abcdefghijklmnopqrstuvwxyz"
-VisibleWord = "_"*len(word)
-guessed_characters = ''
+VisibleWord = "_" * len(word)
+guessed_characters = ""
 MAX_LIVES = 9
-
 lives = MAX_LIVES
 correct = True
 
 def main():
-	
 	greeting()
 	print_game_info(word)
 	while(correct):
-		prompt_input_user()
+		turn()
 
+def line(n=50):
+	print("-" * n + "\n") 
 
 def greeting():
-	print("\n\n\nWELKOM TO HANGMAN!")
+	print("Welcome to hangman!\n")
 
 def print_game_info(word):
 	global guessed_characters
-	print("\n\nI'm thinking of a word that is "+ str(len(word)) + " characters long \n\n" + "_"*len(word)+'\n\n')
-	print("guessed characters: "+ guessed_characters)
+	print("The word I'm thinking of is " + str(len(word)) + " characters long.")
+	print("You have " + str(MAX_LIVES) + " turns to guess the word.")
+	line()
 
+def turn():
+	status()
+	print()
+	prompt_input_user()
 
 def prompt_input_user():
 	guessed_character = input("Please guess a letter: ").lower()
 	check_input_user(guessed_character)
+
+def status():
+	print("Word: " + VisibleWord)
+	print("Guessed characters: " + guessed_characters)
 
 def check_input_user(character):
 	global VisibleWord
@@ -34,13 +43,13 @@ def check_input_user(character):
 	global lives
 	global correct
 
-	guessed_word = ''.join(x for x in VisibleWord if x.isalpha())
-	print(guessed_word)
+	# guessed_word = ''.join(x for x in VisibleWord if x.isalpha())
 
 	if character not in alphabet or not len(character) == 1:
-		print("         False input, try again. My word: {}".format(VisibleWord))
+		print("False input, try again.")
+		prompt_input_user()
 	elif character in guessed_characters:
-		print('You\'ve already tried this character. Choose another.')
+		print("You've already tried \"" + character + "\", please choose another.")
 		prompt_input_user()
 	elif character in word:
 		
@@ -59,12 +68,14 @@ def check_input_user(character):
 
 		if VisibleWord == word:
 			correct = False
-			print("\n\nThats it! The word was: "+VisibleWord)
+			print("\n\nThats it! The word was: " + VisibleWord)
 		else:
-			print('You guessed a correct letter!\n Look at your guessed word so far...: '+VisibleWord)
+			print("Good guess! \"" + character + "\" is part of the word!")
+
+		draw_hangman((MAX_LIVES - lives))
 
 	else:
-		print("That was not correct! You lose one live.")
+		print("\"" + character + "\" is not part of the word! You lose one live...")
 		guessed_characters += character
 
 		lives -= 1
@@ -73,6 +84,7 @@ def check_input_user(character):
 		if lives < 1:
 			print("YOU HANG...")
 			correct = False
+	# line()
 
 def draw_hangman(errors):
 	hangman = ''
@@ -81,7 +93,7 @@ def draw_hangman(errors):
 	elif errors == 2:
 		hangman = "\n_________" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
 	elif errors == 3:
-		hangman =  "\n________" + "\n|       |" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n";
+		hangman =  "\n________" + "\n|       |" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
 	elif errors == 4:
 		hangman =  "\n________" + "\n|       |" + "\n|       O" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n"
 	elif errors == 5:
