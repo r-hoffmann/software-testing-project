@@ -26,8 +26,8 @@ class Hangman(object):
 		line()
 
 	def status(self):
-		print("Word: " + self.visible_word)
-		print("Guessed characters: " + self.guessed_characters)
+		print("Word: {}".format(self.visible_word))
+		print("Guessed characters: {}".format(self.guessed_characters))
 
 	def turn(self):
 		self.status()
@@ -41,13 +41,11 @@ class Hangman(object):
 		self.check_input_user(guessed_character)
 
 	def check_input_user(self, guessed_character):
-		# guessed_word = ''.join(x for x in self.visible_word if x.isalpha())
-
 		if guessed_character not in self.alphabet or not len(guessed_character) == 1:
 			print("False input, try again.")
 			self.promptInputUser()
 		elif guessed_character in self.guessed_characters:
-			print("You've already tried \"" + guessed_character + "\", please choose another.")
+			print("You've already tried \"{}\", please choose another.".format(guessed_character))
 			self.promptInputUser()
 		elif guessed_character in self.word:
 			self.guessed_characters += guessed_character
@@ -63,10 +61,10 @@ class Hangman(object):
 				self.alive = False
 				print("\nYou win! The word was: {}".format(self.visible_word))
 			else:
-				print("Good guess! \"" + guessed_character + "\" is part of the word!")
+				print("Good guess! \"{}\" is part of the word!".format(guessed_character))
 
 		else:
-			print("\"" + guessed_character + "\" is not part of the word! You lose one live...")
+			print("\"{}\" is not part of the word! You lose one live...".format(guessed_character))
 			self.guessed_characters += guessed_character
 
 			self.lives -= 1
