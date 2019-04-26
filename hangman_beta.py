@@ -1,11 +1,11 @@
-import os
+import os, string
 
 def line(n=50):
 	print("-" * n + "\n") 
 
 class Hangman(object):
 	def __init__(self, max_lives=9, word=None):
-		self.alphabet = "abcdefghijklmnopqrstuvwxyz"
+		self.alphabet = string.ascii_lowercase
 		if word == None:
 			self.word = self.getWord()
 		else:
@@ -32,19 +32,23 @@ class Hangman(object):
 	def turn(self):
 		self.status()
 		print()
-		self.promptInputUser()
+		guessed_character = self.promptInputUser()
+		self.processInput(guessed_character)
 		self.draw_hangman(self.max_lives - self.lives)
 		line()
 
 	def promptInputUser(self):
 		guessed_character = input("Please guess a letter: ").lower()
-		self.check_input_user(guessed_character)
-
-	def check_input_user(self, guessed_character):
-		if guessed_character not in self.alphabet or not len(guessed_character) == 1:
+		while not self.validUserInput(guessed_character):
 			print("False input, try again.")
-			self.promptInputUser()
-		elif guessed_character in self.guessed_characters:
+			return self.promptInputUser()
+		return guessed_character
+
+	def validUserInput(self, guessed_character):
+		return len(guessed_character) == 1 and guessed_character in self.alphabet
+
+	def processInput(self, guessed_character):	
+		if guessed_character in self.guessed_characters:
 			print("You've already tried \"{}\", please choose another.".format(guessed_character))
 			self.promptInputUser()
 		elif guessed_character in self.word:
