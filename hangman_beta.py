@@ -57,10 +57,10 @@ class Hangman(object):
 				self.updateVisibleWord()
 
 				if self.wordCompleted():
+					self.finished = True
+					self.won = True
 					if self.interactive:
 						print("\nYou win! The word was: {}".format(self.word))
-						self.finished = True
-						self.won = True
 				else:
 					if self.interactive:
 						print("Good guess! \"{}\" is part of the word!".format(guessed_character))
@@ -69,10 +69,11 @@ class Hangman(object):
 					print("\"{}\" is not part of the word! You lose one life...".format(guessed_character))
 
 				self.lives -= 1
-				if not self.alive() and self.interactive:
-					print("YOU HANG... The word was: {}".format(self.word))
+				if not self.alive():
 					self.finished = True
 					self.won = False
+					if self.interactive:
+						print("YOU HANG... The word was: {}".format(self.word))
 
 	def play(self):
 		self.printWelcome()
