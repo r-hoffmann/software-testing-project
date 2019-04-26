@@ -1,8 +1,12 @@
 import os
+
+def line(n=50):
+	print("-" * n + "\n") 
+
 class Hangman(object):
 	def __init__(self, max_lives=9, word=None):
 		self.alphabet = "abcdefghijklmnopqrstuvwxyz"
-		if word==None:
+		if word == None:
 			self.word = self.getWord()
 		else:
 			self.word = word
@@ -12,28 +16,39 @@ class Hangman(object):
 		self.max_lives = max_lives
 		self.alive = True
 
-	def greeting(self):
-		print("\n\n\nWELCOME TO HANGMAN!")
-	
 	def getWord(self):
-		return 'kaas'
+		return "kaas"
 
-	def printGameInfo(self):
-		print("\n\nI'm thinking of a word that is {} characters long \n\n{}\n\n".format(len(self.word), self.visible_word))
-		print("Guessed characters: {}".format(self.guessed_characters))
+	def printWelcome(self):
+		print("Welcome to hangman!\n")
+		print("I'm thinking of a word that is {} characters long.".format(len(self.word)))
+		# print("You have " + str(self.max_lives) + " lives guess it...")
+		line()
 
+	def status(self):
+		print("Word: " + self.visible_word)
+		print("Guessed characters: " + self.guessed_characters)
+
+	def turn(self):
+		self.status()
+		print()
+		self.promptInputUser()
+		self.draw_hangman(self.max_lives - self.lives)
+		line()
 
 	def promptInputUser(self):
 		guessed_character = input("Please guess a letter: ").lower()
 		self.check_input_user(guessed_character)
 
 	def check_input_user(self, guessed_character):
-		guessed_word = ''.join(x for x in self.visible_word if x.isalpha())
+		# guessed_word = ''.join(x for x in self.visible_word if x.isalpha())
 
 		if guessed_character not in self.alphabet or not len(guessed_character) == 1:
-			print("         False input, try again. My word: {}".format(visible_word))
+			print("False input, try again.")
+			self.promptInputUser()
 		elif guessed_character in self.guessed_characters:
-			print("You've already tried this character. Choose another.")
+			print("You've already tried \"" + guessed_character + "\", please choose another.")
+			self.promptInputUser()
 		elif guessed_character in self.word:
 			self.guessed_characters += guessed_character
 
@@ -46,17 +61,15 @@ class Hangman(object):
 
 			if self.visible_word == self.word:
 				self.alive = False
-				print("\n\nThats it! The word was: {}".format(self.visible_word))
+				print("\nYou win! The word was: {}".format(self.visible_word))
 			else:
-				pass
-				# print('You guessed a correct letter!\n Look at your guessed word so far...: {}'.format(self.visible_word))
+				print("Good guess! \"" + guessed_character + "\" is part of the word!")
 
 		else:
-			print("That was not correct! You lose one live.")
+			print("\"" + guessed_character + "\" is not part of the word! You lose one live...")
 			self.guessed_characters += guessed_character
 
 			self.lives -= 1
-			self.draw_hangman(self.max_lives - self.lives)
 
 			if self.lives < 1:
 				print("YOU HANG...")
@@ -86,10 +99,9 @@ class Hangman(object):
 
 	def play(self):
 		self.lives = self.max_lives
-		self.greeting()
+		self.printWelcome()
 		while self.alive:
-			self.printGameInfo()
-			self.promptInputUser()
+			self.turn()
 			
 
 if __name__ == '__main__':
