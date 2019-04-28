@@ -17,7 +17,7 @@ class Hangman(object):
 
 	# Functional Functions
 	def getWord(self):
-		return "kaas"
+		return "aardbeitje"
 
 	def turn(self):
 		guessed_character = self.promptInputUser()
@@ -43,6 +43,7 @@ class Hangman(object):
 
 	def updateVisibleWord(self):
 		self.visible_word = ''
+
 		for i, w in enumerate(self.word):
 			if w in self.guessed_characters:
 				self.visible_word += w
@@ -61,13 +62,13 @@ class Hangman(object):
 					self.finished = True
 					self.won = True
 					if self.interactive:
-						print("\nYou win! The word was: {}\n".format(self.word.upper()))
+						print("\n          You win! The word was: {}\n".format(self.word.upper()))
 				else:
 					if self.interactive:
-						print("Good guess! \"{}\" is part of the word!\n".format(guessed_character.upper()))
+						print("\n          Good guess! \"{}\" is part of the word!\n".format(guessed_character.upper()))
 			else:
 				if self.interactive:
-					print(u"\nAah, too bad! \"{}\" is not part of the word! -♥\n".format(guessed_character.upper()))
+					print(u"\n          Aah, too bad! \"{}\" is not part of the word! -♥\n".format(guessed_character.upper()))
 
 				self.lives -= 1
 				if not self.alive():
@@ -97,10 +98,10 @@ class Hangman(object):
 		guessed_character = input("Please guess a letter: ").lower()
 		self.printLine()
 
-		print('You guessed: "{}"'.format(guessed_character.upper()))
+		print('          You guessed: "{}"'.format(guessed_character.upper()))
 
 		while not self.validUserInput(guessed_character):
-			print("False input, try again.\n")
+			print("          False input, try again.\n")
 			# self.printLine()
 
 			return self.promptInputUser()
@@ -116,19 +117,19 @@ class Hangman(object):
 		print(self.getLine(n))
 
 	def printLives(self):
-		print(u'[ ' + '♥ '*self.lives + '  '*self.livesLost()+']')
+		print(u'          [ ' + '♥ '*self.lives + '  '*self.livesLost()+'] X '+ str(self.lives))
 
 	def getWelcome(self):
 		# print("You have " + str(self.max_lives) + " lives guess it...")
-		return "\nWELCOME TO HANGMAN!\n\nHow to play: \n1. Enter alphabetical characters\n2. Have fun!\n\nI'm thinking of a word that is {} characters long...?\n\n".format(len(self.word))
+		return "\n          WELCOME TO HANGMAN!\n\n          How to play: \n            1. Enter alphabetical characters\n            2. Have fun!\n\n          I'm thinking of a word that is {} characters long...?\n\n".format(len(self.word))
 
 	def printWelcome(self):
 		print(self.getWelcome())
 
 	def getStatus(self):
-		return "Guessed characters: {}\nWord: {}\n".format(
+		return "\n          Word: {}\n".format(
 			 
-			"[ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]",
+			# "[ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]",
 			''.join([character.upper()+' ' if character.isalpha() else '_ ' for character in list(self.visible_word)])
 			)
 
@@ -137,22 +138,26 @@ class Hangman(object):
 
 	def getHangman(self):
 		printed_hangman = {
-			0: "\n"*8,
-			1: "\n" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n",
-			2: "\n_________" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n",
-			3: "\n_________" + "\n|        |" + "\n|" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n",
-			4: "\n_________" + "\n|        |" + "\n|        0" + "\n|" + "\n|" + "\n|" + "\n|_______________________\n",
-			5: "\n_________" + "\n|        |" + "\n|        0" + "\n|        |" + "\n|" + "\n|" + "\n|_______________________\n",
-			6: "\n_________" + "\n|        |" + "\n|        0" + "\n|       /|" + "\n|" + "\n|" + "\n|_______________________\n",
-			7: "\n_________" + "\n|        |" + "\n|        0" + "\n|       /|\\" + "\n|" + "\n|" + "\n|_______________________\n",
-			8: "\n_________" + "\n|        |" + "\n|        0" + "\n|       /|\\" + "\n|        ^" +  "\n|                 " + "\n|_______________________\n",
-			9: "\n_________" + "\n|        |" + "\n|        0" + "\n|       /|\\" + "\n|        ^" + " \n|       / \\      " + "\n|_______________________\n"
+			0: "\n",
+			1: "\n" + "\n          |" + "\n          |" + "\n          |          " + "\n          |" + "\n          |" + "\n          |_______________________\n",
+			2: "\n          _________" + "\n          |" + "\n          |" + "\n          |" + "\n          |" + "\n          |" + "\n          |_______________________\n",
+			3: "\n          _________" + "\n          |        |" + "\n          |" + "\n          |" + "\n          |" + "\n          |" + "\n          |_______________________\n",
+			4: "\n          _________" + "\n          |        |" + "\n          |        0" + "\n          |" + "\n          |" + "\n          |" + "\n          |_______________________\n",
+			5: "\n          _________" + "\n          |        |" + "\n          |        0" + "\n          |        |" + "\n          |" + "\n          |" + "\n          |_______________________\n",
+			6: "\n          _________" + "\n          |        |" + "\n          |        0" + "\n          |       /|" + "\n          |" + "\n          |" + "\n          |_______________________\n",
+			7: "\n          _________" + "\n          |        |" + "\n          |        0" + "\n          |       /|\\" + "\n          |" + "\n          |" + "\n          |_______________________\n",
+			8: "\n          _________" + "\n          |        |" + "\n          |        0" + "\n          |       /|\\" + "\n          |        ^" +  "\n          |                 " + "\n          |_______________________\n",
+			9: "\n          _________" + "\n          |        |" + "\n          |        0" + "\n          |       /|\\" + "\n          |        ^" + " \n          |       / \\      " + "\n          |_______________________\n"
 		}
 		return printed_hangman[self.livesLost()]
 
 	def printHangman(self):
-		print(self.getHangman())
-	
+		if self.lives != self.max_lives:
+			print(self.getHangman()  +  "\n          " + 
+				"[ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]",
+				)
+		else:
+			print(self.getHangman())
 	def drawInterface(self):
 		pass
 	# /Interactive Functions
