@@ -55,6 +55,7 @@ class Hangman(object):
 			self.promptInputUser()
 		else:
 			self.guessed_characters += guessed_character
+			self.guessed_characters = sorted(self.guessed_characters)
 			if self.characterInWord(guessed_character):
 				self.updateVisibleWord()
 
@@ -75,7 +76,7 @@ class Hangman(object):
 					self.finished = True
 					self.won = False
 					if self.interactive:
-						print("YOU HANG... The word was: {}".format(self.word.upper()))
+						print("\n          YOU HANG... The word was: {}".format(self.word.upper()))
 
 	def play(self):
 		self.printWelcome()
@@ -127,11 +128,10 @@ class Hangman(object):
 		print(self.getWelcome())
 
 	def getStatus(self):
-		return "\n          Word: {}\n".format(
-			 
+		return "          " + "_"*(len(self.word)*(2)+6) + "\n" + "\n          {}\n".format(
 			# "[ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]",
 			''.join([character.upper()+' ' if character.isalpha() else '_ ' for character in list(self.visible_word)])
-			)
+			) + "          " + "_"*(len(self.word)*(2)+6)
 
 	def printStatus(self):
 		print(self.getStatus())
@@ -153,9 +153,8 @@ class Hangman(object):
 
 	def printHangman(self):
 		if self.lives != self.max_lives:
-			print(self.getHangman()  +  "\n          " + 
-				"[ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]",
-				)
+			print("\n          [ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]"
+				+ self.getHangman())
 		else:
 			print(self.getHangman())
 	def drawInterface(self):
