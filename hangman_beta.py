@@ -1,9 +1,9 @@
-import os, string
+import os, random, string
 
 class Hangman(object):
 	def __init__(self, interactive=False, max_lives=9, word=None):
-		self.interactive=interactive
-		self.alphabet = string.ascii_lowercase
+		self.interactive = interactive
+		self.alphabet = string.ascii_uppercase
 		if word == None:
 			self.word = self.getWord()
 		else:
@@ -17,7 +17,13 @@ class Hangman(object):
 
 	# Functional Functions
 	def getWord(self):
-		return "aardbeitje"
+		return "aardbeitje".upper()
+
+		from words import words 
+
+		# wordlist: list of strings
+		wordlist = words.split()
+		return wordlist[random.randint(0,len(wordlist) - 1)].upper()
 
 	def turn(self):
 		guessed_character = self.promptInputUser()
@@ -95,8 +101,7 @@ class Hangman(object):
 
 	# Interactive Functions
 	def promptInputUser(self):
-
-		guessed_character = input("Please guess a letter: ").lower()
+		guessed_character = input("Please guess a letter: ").upper()
 		self.printLine()
 
 		print('          You guessed: "{}"'.format(guessed_character.upper()))
@@ -118,7 +123,7 @@ class Hangman(object):
 		print(self.getLine(n))
 
 	def printLives(self):
-		print(u'          [ ' + '♥ '*self.lives + '  '*self.livesLost()+'] X '+ str(self.lives))
+		print(u'          [ ' + '♥ '*self.lives + '  '*self.livesLost()+'] X {}'.format(self.lives))
 
 	def getWelcome(self):
 		# print("You have " + str(self.max_lives) + " lives guess it...")
@@ -157,6 +162,7 @@ class Hangman(object):
 				+ self.getHangman())
 		else:
 			print(self.getHangman())
+			
 	def drawInterface(self):
 		pass
 	# /Interactive Functions
