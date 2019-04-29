@@ -50,10 +50,6 @@ class Hangman(object):
 		self.processInput()
 		if self.interactive:
 			self.drawInterface()
-			# self.printLives()
-			# self.printStatus()
-			# self.printHangman()
-			# self.printLine()
 	
 	def characterAlreadyGuessed(self):
 		if self.guessed_character in self.guessed_characters:
@@ -80,7 +76,7 @@ class Hangman(object):
 
 	def processInput(self):	
 		if self.characterAlreadyGuessed():
-			self.promptInputUser()
+			return 
 		else:
 			self.guessed_characters += self.guessed_character
 			self.guessed_characters = sorted(self.guessed_characters)
@@ -91,33 +87,26 @@ class Hangman(object):
 					self.finished = True
 					self.won = True
 					if self.interactive:
-						self.gameEndStatus = 1;
-
-						# print("\n          You win! The word was: {}\n".format(self.word.upper()))
+						self.gameEndStatus = 1
 				else:
 					if self.interactive:
 						self.userInputStatus = 1
-						# print("\n          Good guess! \"{}\" is part of the word!\n".format(guessed_character.upper()))
 			else:
 				if self.interactive:
 					self.userInputStatus = 2
-					# print(u"\n          Aah, too bad! \"{}\" is not part of the word! -♥\n".format(guessed_character.upper()))
 
 				self.lives -= 1
 				if not self.alive():
 					self.finished = True
 					self.won = False
 					if self.interactive:
-						self.gameEndStatus = 0;
-						# print("\n          YOU HANG... The word was: {}".format(self.word.upper()))
+						self.gameEndStatus = 0
 
 	def play(self):
 		self.printWelcome()
 		self.printHangman()
 		while not self.wordCompleted() and self.alive():
 			self.turn()
-			# if self.interactive:
-			# 	self.drawInterface()
 
 	def livesLost(self):
 		return self.max_lives - self.lives
