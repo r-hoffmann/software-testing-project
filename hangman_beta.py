@@ -46,7 +46,7 @@ class Hangman(object):
 		return wordlist[random.randint(0,len(wordlist) - 1)].upper()
 
 	def turn(self):
-		self.guessed_character = self.promptInputUser()
+		self.promptInputUser()
 		self.processInput()
 		if self.interactive:
 			self.drawInterface()
@@ -76,7 +76,7 @@ class Hangman(object):
 
 	def processInput(self):	
 		if self.characterAlreadyGuessed():
-			return 
+			self.userInputStatus = 0 
 		else:
 			self.guessed_characters += self.guessed_character
 			self.guessed_characters = sorted(self.guessed_characters)
@@ -103,7 +103,9 @@ class Hangman(object):
 						self.gameEndStatus = 0
 
 	def play(self):
-		self.printWelcome()
+		self.Welcome()
+		self.wordInfo()
+		self.printPlayWord()
 		self.printHangman()
 		while not self.wordCompleted() and self.alive():
 			self.turn()
@@ -124,12 +126,13 @@ class Hangman(object):
 
 		if not self.validUserInput():
 			self.userInputStatus = 3
-			return
+			# return
 			# print("          False input, try again.\n")
 			# self.printLine()
 
-			return self.promptInputUser()
-		return self.guessed_character
+			# return self.promptInputUser()
+		elif self.validUserInput():	
+			 self.guessed_character
 
 	def validUserInput(self):
 		return len(self.guessed_character) == 1 and self.guessed_character in self.alphabet
@@ -143,9 +146,9 @@ class Hangman(object):
 	def printLives(self):
 		print(u'          [ ' + '♥ '*self.lives + '  '*self.livesLost()+'] X {}'.format(self.lives))
 
-	def getWelcome(self):
+	def wordInfo(self):
 		# print("You have " + str(self.max_lives) + " lives guess it...")
-		return "\n          WELCOME TO HANGMAN!\n\n          How to play: \n            1. Enter alphabetical characters\n            2. Have fun!\n\n          I'm thinking of a word that is {} characters long...?\n\n".format(len(self.word))
+		print("\n          How to play: \n            1. Enter alphabetical characters\n            2. Have fun!\n\n          I'm thinking of a word that is {} characters long...?\n\n".format(len(self.word)))
 
 	def printWelcome(self):
 		print(self.getWelcome())
@@ -161,7 +164,7 @@ class Hangman(object):
 
 	def getHangman(self):
 		printed_hangman = {
-			0: "\n",
+			0: "\n"*8,
 			1: "\n" + "\n          |" + "\n          |" + "\n          |          " + "\n          |" + "\n          |" + "\n          |_______________________\n",
 			2: "\n          _________" + "\n          |" + "\n          |" + "\n          |" + "\n          |" + "\n          |" + "\n          |_______________________\n",
 			3: "\n          _________" + "\n          |        |" + "\n          |" + "\n          |" + "\n          |" + "\n          |" + "\n          |_______________________\n",
@@ -180,6 +183,50 @@ class Hangman(object):
 				+ self.getHangman())
 		else:
 			print(self.getHangman())
+
+	def YouWin(self):
+		return(
+"          __   __                     _       \n"
+"          \ \ / /                    (_)      \n"
+"           \ V /___  _   _  __      ___ _ __  \n"
+"            \ // _ \| | | | \ \ /\ / / | '_ \ \n"
+"            | | (_) | |_| |  \ V  V /| | | | |\n"
+"            \_/\___/ \__,_|   \_/\_/ |_|_| |_|\n"
+                                    
+                                    			
+		)
+
+	def YouLoose(self):
+		return(
+"          __   __            _                                  \n"
+"          \ \ / /           | |                                 \n"
+"           \ V /___  _   _  | |     ___   ___  ___  ___         \n"
+"            \ // _ \| | | | | |    / _ \ / _ \/ __|/ _ \        \n"
+"            | | (_) | |_| | | |___| (_) | (_) \__ \  __/  _ _ _ \n"
+"            \_/\___/ \__,_| \_____/\___/ \___/|___/\___| (_|_|_)\n"
+                                                      
+                                                      			
+		)
+	def Welcome(self):
+		print(
+"           _    _      _                            _____     \n"
+"          | |  | |    | |                          |_   _|    \n"
+"          | |  | | ___| | ___ ___  _ __ ___   ___    | | ___  \n"
+"          | |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \   | |/ _ \ \n"
+"          \  /\  /  __/ | (_| (_) | | | | | |  __/   | | (_) |\n"
+"           \/  \/ \___|_|\___\___/|_| |_| |_|\___|   \_/\___/ \n"
+                                                    "\n"
+                                                    "\n"
+"           _   _   ___   _   _ _____ ___  ___  ___   _   _   \n"
+"           | | | | / _ \ | \ | |  __ \|  \/  | / _ \ | \ | |  \n"
+"           | |_| |/ /_\ \|  \| | |  \/| .  . |/ /_\ \|  \| |  \n"
+"           |  _  ||  _  || . ` | | __ | |\/| ||  _  || . ` |  \n"
+"           | | | || | | || |\  | |_\ \| |  | || | | || |\  |  \n"
+"           \_| |_/\_| |_/\_| \_/\____/\_|  |_/\_| |_/\_| \_/  \n"
+                                                    
+		)
+
+                                                    
 			
 	def drawInterface(self):
 		
@@ -192,7 +239,9 @@ class Hangman(object):
 			},
 			"gameEnd" :{
 				0: "\n          YOU HANG... The word was: {}".format(self.word.upper()),
-				1: "\n          You win! The word was: {}\n".format(self.word.upper())
+				1: "\n          You win! The word was: {}\n".format(self.word.upper()),
+				2: self.YouWin(),	
+				3: self.YouLoose()
 			},
 			"guessed":'          You guessed: "{}"'.format(self.guessed_character.upper())
 		}
@@ -201,6 +250,7 @@ class Hangman(object):
 		print(self.printStatus['guessed'])
 		print(self.printStatus['userInput'][self.userInputStatus])
 		self.printHangman()
+		self.printLives()
 		self.printPlayWord()
 
 		pass
@@ -210,3 +260,4 @@ class Hangman(object):
 if __name__ == '__main__':
 	hangman = Hangman(True)
 	hangman.play()
+
