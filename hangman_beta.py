@@ -37,8 +37,6 @@ class Hangman(object):
 	# 	return self.printStatus['userInput'][self.input_status]
 	# Functional Functions
 	def getWord(self):
-		return "aardbeitje".upper()
-
 		from words import words 
 
 		# wordlist: list of strings
