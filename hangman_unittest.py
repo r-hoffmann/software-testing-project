@@ -53,13 +53,15 @@ class TestHangman(unittest.TestCase):
         hangman = Hangman(False, 9, 'hangman')
         for character in 'hangm':
             hangman.processInput(character)
-        self.assertFalse(hangman.finished and hangman.win)
+        self.assertTrue(hangman.finished)
+        self.assertTrue(hangman.won)
         
     def test_user_without_lives_implies_loss(self):
         hangman = Hangman(False, 9, 'hangman')
         for character in 'bcdefijkl':
             hangman.processInput(character)
-        self.assertFalse(hangman.finished and not hangman.win)
+        self.assertTrue(hangman.finished)
+        self.assertFalse(hangman.won)
         
     def test_supply_feedback(self):
         pass
