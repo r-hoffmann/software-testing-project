@@ -15,7 +15,19 @@ class Hangman(object):
 		self.lives = self.max_lives
 		self.finished = False
 
+		'''
+		userInputStatus:		0. Already Tried
+								1. Good guess
+								2. Wrong Guess
+								3. Wrong input
+
+		'''
 		self.userInputStatus = None
+
+		'''
+		gameEndStatus:			0. Loss
+								1. Win
+		'''		
 		self.gameEndStatus = None
 		self.guessed_character = None
 
@@ -122,7 +134,8 @@ class Hangman(object):
 		# print('          You guessed: "{}"'.format(guessed_character.upper()))
 
 		while not self.validUserInput():
-			print("          False input, try again.\n")
+			self.userInputStatus = 3
+			# print("          False input, try again.\n")
 			# self.printLine()
 
 			return self.promptInputUser()
@@ -185,6 +198,7 @@ class Hangman(object):
 				0: "\n          You've already tried \"{}\", please choose another.".format(self.guessed_character),
 				1: "\n          Good guess! \"{}\" is part of the word!\n".format(self.guessed_character.upper()),
 				2: u"\n          Aah, too bad! \"{}\" is not part of the word! -♥\n".format(self.guessed_character.upper()),
+				3: "\n          False input, try again.\n"
 			},
 			"gameEnd" :{
 				0: "\n          YOU HANG... The word was: {}".format(self.word.upper()),
