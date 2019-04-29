@@ -133,8 +133,9 @@ class Hangman(object):
 
 		# print('          You guessed: "{}"'.format(guessed_character.upper()))
 
-		while not self.validUserInput():
+		if not self.validUserInput():
 			self.userInputStatus = 3
+			return
 			# print("          False input, try again.\n")
 			# self.printLine()
 
@@ -160,14 +161,14 @@ class Hangman(object):
 	def printWelcome(self):
 		print(self.getWelcome())
 
-	def getStatus(self):
+	def getPlayWord(self):
 		return "          " + "_"*(len(self.word)*(2)+6) + "\n" + "\n          {}\n".format(
 			# "[ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]",
 			''.join([character.upper()+' ' if character.isalpha() else '_ ' for character in list(self.visible_word)])
 			) + "          " + "_"*(len(self.word)*(2)+6)
 
-	def printStatus(self):
-		print(self.getStatus())
+	def printPlayWord(self):
+		print(self.getPlayWord())
 
 	def getHangman(self):
 		printed_hangman = {
@@ -210,7 +211,8 @@ class Hangman(object):
 		self.printLine()
 		print(self.printStatus['guessed'])
 		print(self.printStatus['userInput'][self.userInputStatus])
-		self.printStatus()
+		self.printHangman()
+		self.printPlayWord()
 
 		pass
 	# /Interactive Functions
