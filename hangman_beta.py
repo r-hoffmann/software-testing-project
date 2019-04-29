@@ -15,6 +15,23 @@ class Hangman(object):
 		self.lives = self.max_lives
 		self.finished = False
 
+		self.userInputStatus = None;
+		self.gameEndStatus = None;
+
+		self.printStatus = {
+			"userInput": {
+				0: "\n          You've already tried \"{}\", please choose another.".format(guessed_character),
+				1: "\n          Good guess! \"{}\" is part of the word!\n".format(guessed_character.upper()),
+				2: u"\n          Aah, too bad! \"{}\" is not part of the word! -♥\n".format(guessed_character.upper()),
+			},
+			"gameEnd" :{
+				0: "\n          YOU HANG... The word was: {}".format(self.word.upper()),
+				1: "\n          You win! The word was: {}\n".format(self.word.upper())
+			}
+		}
+		
+	# def printInputStatus():
+	# 	return self.printStatus['userInput'][self.input_status]
 	# Functional Functions
 	def getWord(self):
 		return "aardbeitje"
@@ -31,6 +48,7 @@ class Hangman(object):
 	def characterAlreadyGuessed(self, guessed_character):
 		if guessed_character in self.guessed_characters:
 			if self.interactive:
+				input_status = 0
 				print("You've already tried \"{}\", please choose another.".format(guessed_character))
 			return True
 		return False
