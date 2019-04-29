@@ -46,13 +46,15 @@ class Hangman(object):
 		return wordlist[random.randint(0,len(wordlist) - 1)].upper()
 
 	def turn(self):
+		self.userInputStatus = 0
 		self.promptInputUser()
-		self.processInput()
+		if self.userInputStatus == 0:
+			self.processInput()
 		if self.interactive:
 			self.drawInterface()
 	
 	def characterAlreadyGuessed(self):
-		if self.guessed_character in self.guessed_characters:
+		if self.guessed_character != None and self.guessed_character in self.guessed_characters:
 			if self.interactive:
 				self.userInputStatus = 0
 				# print("You've already tried \"{}\", please choose another.".format(guessed_character))
@@ -75,6 +77,8 @@ class Hangman(object):
 				self.visible_word += '_'
 
 	def processInput(self):	
+		if self.guessed_character == None:
+			return 
 		if self.characterAlreadyGuessed():
 			self.userInputStatus = 0 
 		else:
@@ -107,6 +111,7 @@ class Hangman(object):
 		self.wordInfo()
 		self.printPlayWord()
 		self.printHangman()
+		self.printLine()
 		while not self.wordCompleted() and self.alive():
 			self.turn()
 
@@ -120,25 +125,14 @@ class Hangman(object):
 	# Interactive Functions
 	def promptInputUser(self):
 		self.guessed_character = input("Please guess a letter: ").upper()
-		# self.printLine()
-
-		# print('          You guessed: "{}"'.format(guessed_character.upper()))
-
 		if not self.validUserInput():
 			self.userInputStatus = 3
-			# return
-			# print("          False input, try again.\n")
-			# self.printLine()
-
-			# return self.promptInputUser()
-		elif self.validUserInput():	
-			 self.guessed_character
 
 	def validUserInput(self):
 		return len(self.guessed_character) == 1 and self.guessed_character in self.alphabet
 
 	def getLine(self, n=50):
-		return "-" * n + ""
+		return "_" * n + ""
 
 	def printLine(self, n=50):
 		print(self.getLine(n))
@@ -178,11 +172,9 @@ class Hangman(object):
 		return printed_hangman[self.livesLost()]
 
 	def printHangman(self):
-		if self.lives != self.max_lives:
-			print("\n          [ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]"
-				+ self.getHangman())
-		else:
-			print(self.getHangman())
+		if self.guessed_characters != '':
+			print("\n          [ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]")
+		print(self.getHangman())
 
 	def YouWin(self):
 		return(
@@ -191,22 +183,17 @@ class Hangman(object):
 "           \ V /___  _   _  __      ___ _ __  \n"
 "            \ // _ \| | | | \ \ /\ / / | '_ \ \n"
 "            | | (_) | |_| |  \ V  V /| | | | |\n"
-"            \_/\___/ \__,_|   \_/\_/ |_|_| |_|\n"
-                                    
-                                    			
-		)
+"            \_/\___/ \__,_|   \_/\_/ |_|_| |_|\n")
 
 	def YouLoose(self):
 		return(
-"          __   __            _                                  \n"
-"          \ \ / /           | |                                 \n"
-"           \ V /___  _   _  | |     ___   ___  ___  ___         \n"
-"            \ // _ \| | | | | |    / _ \ / _ \/ __|/ _ \        \n"
-"            | | (_) | |_| | | |___| (_) | (_) \__ \  __/  _ _ _ \n"
-"            \_/\___/ \__,_| \_____/\___/ \___/|___/\___| (_|_|_)\n"
-                                                      
-                                                      			
-		)
+"          __   __            _                 \n"
+"          \ \ / /           | |                \n"
+"           \ V /___  _   _  | | ___  ___  ___  \n"
+"            \ // _ \| | | | | |/ _ \/ __|/ _ \ \n"
+"            | | (_) | |_| | | | (_) \__ \  __/ \n"
+"            \_/\___/ \__,_| |_|\___/|___/\___| \n")
+
 	def Welcome(self):
 		print(
 "           _    _      _                            _____     \n"
@@ -226,34 +213,46 @@ class Hangman(object):
                                                     
 		)
 
-                                                    
+	def printYouLoose(self):
+		print(self.YouLoose())
+		print('           The word was {}'.format(self.word))
+
+	def printYouWin(self):
+		print(self.YouWin())
+		print('           The word was {}'.format(self.word))
 			
 	def drawInterface(self):
-		
+		if self.gameEndStatus != None:
+			if self.gameEndStatus == 1:
+				self.printYouWin()
+			else:
+				self.printYouLoose()
+			return
+
+
+		if self.guessed_character == None:
+			self.guessed_character_uppercase = ''
+		else:
+			self.guessed_character_uppercase = self.guessed_character.upper()
+			
 		self.printStatus = {
 			"userInput": {
 				0: "\n          You've already tried \"{}\", please choose another.".format(self.guessed_character),
-				1: "\n          Good guess! \"{}\" is part of the word!\n".format(self.guessed_character.upper()),
-				2: u"\n          Aah, too bad! \"{}\" is not part of the word! -♥\n".format(self.guessed_character.upper()),
-				3: "\n          False input, try again.\n"
+				1: "\n          Good guess! \"{}\" is part of the word!".format(self.guessed_character_uppercase),
+				2: u"\n          Aah, too bad! \"{}\" is not part of the word! -♥".format(self.guessed_character_uppercase),
+				3: "\n          False input, try again."
 			},
-			"gameEnd" :{
-				0: "\n          YOU HANG... The word was: {}".format(self.word.upper()),
-				1: "\n          You win! The word was: {}\n".format(self.word.upper()),
-				2: self.YouWin(),	
-				3: self.YouLoose()
-			},
-			"guessed":'          You guessed: "{}"'.format(self.guessed_character.upper())
+			"guessed":'          You guessed: "{}"'.format(self.guessed_character_uppercase)
 		}
 
-		self.printLine()
+		print()
 		print(self.printStatus['guessed'])
 		print(self.printStatus['userInput'][self.userInputStatus])
 		self.printHangman()
 		self.printLives()
 		self.printPlayWord()
-
-		pass
+		print()
+		self.printLine()
 	# /Interactive Functions
 	
 

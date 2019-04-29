@@ -1,4 +1,5 @@
 import containers, io, mock, string, unittest, sys
+from contextlib import redirect_stdout
 from hangman_beta import Hangman
 
 class TestHangman(unittest.TestCase):
@@ -72,8 +73,16 @@ class TestHangman(unittest.TestCase):
     def test_supply_feedback(self):
         for character in string.ascii_letters:
             with mock.patch('builtins.input', return_value=character):
-                hangman = Hangman()
-                assert character.upper() in hangman.turn()
+                hangman = Hangman(True, 9, 'hangman')
+                f = io.StringIO()
+                with redirect_stdout(f):
+                    hangman.turn()
+                out = f.getvalue()
+                print(character, out)
+                if character.lower() in 'hangman':
+                    assert 'Good guess!' in out
+                else:
+                    assert 'too bad' in out
         
     def test_user_guesses_last_character(self):
         pass
