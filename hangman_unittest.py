@@ -25,16 +25,16 @@ class TestHangman(unittest.TestCase):
     def test_letter_correct(self):
         hangman = Hangman()
         for character in string.printable:
-            hangman.guessed_character = character
+            hangman.guessed_character = character.upper()
             valid = hangman.validUserInput()
-            self.assertEqual(valid, character in string.ascii_uppercase)
+            self.assertEqual(valid, character.upper() in string.ascii_uppercase)
         
     def test_incorrect_letter_changes_hangman(self):
         hangman = Hangman(False, 9, 'hangman')
         hangman_figures = []
         for character in 'bcdefijkl':
             hangman_figures.append(hangman.getHangman())
-            hangman.guessed_character = character
+            hangman.guessed_character = character.upper()
             hangman.processInput()
 
         for figure_1, figure_2 in zip(hangman_figures[:-1], hangman_figures[1:]):
@@ -46,7 +46,7 @@ class TestHangman(unittest.TestCase):
         lives = hangman.lives
         for character in 'bcdefijkl':
             hangman_figures.append(hangman.getHangman())
-            hangman.guessed_character = character
+            hangman.guessed_character = character.upper()
             hangman.processInput()
             self.assertTrue(hangman.lives < lives)
             lives = hangman.lives
@@ -57,7 +57,7 @@ class TestHangman(unittest.TestCase):
     def test_user_completes_word_implies_win(self):
         hangman = Hangman(False, 9, 'hangman')
         for character in 'hangm':
-            hangman.guessed_character = character
+            hangman.guessed_character = character.upper()
             hangman.processInput()
         self.assertTrue(hangman.finished)
         self.assertTrue(hangman.won)
@@ -65,7 +65,7 @@ class TestHangman(unittest.TestCase):
     def test_user_without_lives_implies_loss(self):
         hangman = Hangman(False, 9, 'hangman')
         for character in 'bcdefijkl':
-            hangman.guessed_character = character
+            hangman.guessed_character = character.upper()
             hangman.processInput()
         self.assertTrue(hangman.finished)
         self.assertFalse(hangman.won)
@@ -78,11 +78,10 @@ class TestHangman(unittest.TestCase):
                 with redirect_stdout(f):
                     hangman.turn()
                 out = f.getvalue()
-                print(character, out)
                 if character.lower() in 'hangman':
-                    assert 'Good guess!' in out
+                    self.assertTrue('Good guess!' in out)
                 else:
-                    assert 'too bad' in out
+                    self.assertTrue('too bad' in out)
         
     def test_user_guesses_last_character(self):
         pass

@@ -7,7 +7,7 @@ class Hangman(object):
 		if word == None:
 			self.word = self.getWord()
 		else:
-			self.word = word
+			self.word = word.upper()
 
 		self.visible_word = "".join(["_" for w in self.word])
 		self.guessed_characters = ''
@@ -31,15 +31,10 @@ class Hangman(object):
 		self.gameEndStatus = None
 		self.guessed_character = None
 
-
-		
-	# def printInputStatus():
-	# 	return self.printStatus['userInput'][self.input_status]
 	# Functional Functions
 	def getWord(self):
 		from words import words 
 
-		# wordlist: list of strings
 		wordlist = words.split()
 		return wordlist[random.randint(0,len(wordlist) - 1)].upper()
 
@@ -55,7 +50,6 @@ class Hangman(object):
 		if self.guessed_character != None and self.guessed_character in self.guessed_characters:
 			if self.interactive:
 				self.userInputStatus = 0
-				# print("You've already tried \"{}\", please choose another.".format(guessed_character))
 			return True
 		return False
 
@@ -105,11 +99,8 @@ class Hangman(object):
 						self.gameEndStatus = 0
 
 	def play(self):
-		self.Welcome()
-		self.wordInfo()
-		self.printPlayWord()
-		self.printHangman()
-		self.printLine()
+		self.userInputStatus = 0
+		self.drawInterface()
 		while not self.wordCompleted() and self.alive():
 			self.turn()
 
@@ -130,7 +121,7 @@ class Hangman(object):
 		return len(self.guessed_character) == 1 and self.guessed_character in self.alphabet
 
 	def getLine(self, n=50):
-		return "_" * n + ""
+		return "_" * n
 
 	def printLine(self, n=50):
 		print(self.getLine(n))
@@ -138,16 +129,17 @@ class Hangman(object):
 	def printLives(self):
 		print(u'          [ ' + '♥ '*self.lives + '  '*self.livesLost()+'] X {}'.format(self.lives))
 
-	def wordInfo(self):
-		# print("You have " + str(self.max_lives) + " lives guess it...")
-		print("\n          How to play: \n            1. Enter alphabetical characters\n            2. Have fun!\n\n          I'm thinking of a word that is {} characters long...?\n\n".format(len(self.word)))
+	def getWordInfo(self):
+		return "\n          How to play: \n            1. Enter alphabetical characters\n            2. Have fun!\n\n          I'm thinking of a word that is {} characters long...?\n\n".format(len(self.word))
+
+	def printWordInfo(self):
+		print(self.getWordInfo())
 
 	def printWelcome(self):
 		print(self.getWelcome())
 
 	def getPlayWord(self):
 		return "          " + "_"*(len(self.word)*(2)+6) + "\n" + "\n          {}\n".format(
-			# "[ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]",
 			''.join([character.upper()+' ' if character.isalpha() else '_ ' for character in list(self.visible_word)])
 			) + "          " + "_"*(len(self.word)*(2)+6)
 
@@ -183,7 +175,7 @@ class Hangman(object):
 "            | | (_) | |_| |  \ V  V /| | | | |\n"
 "            \_/\___/ \__,_|   \_/\_/ |_|_| |_|\n")
 
-	def YouLoose(self):
+	def getYouLose(self):
 		return(
 "          __   __            _                 \n"
 "          \ \ / /           | |                \n"
@@ -192,7 +184,7 @@ class Hangman(object):
 "            | | (_) | |_| | | | (_) \__ \  __/ \n"
 "            \_/\___/ \__,_| |_|\___/|___/\___| \n")
 
-	def Welcome(self):
+	def getWelcome(self):
 		print(
 "           _    _      _                            _____     \n"
 "          | |  | |    | |                          |_   _|    \n"
@@ -211,8 +203,8 @@ class Hangman(object):
                                                     
 		)
 
-	def printYouLoose(self):
-		print(self.YouLoose())
+	def printYouLose(self):
+		print(self.getYouLose())
 		print('           The word was {}'.format(self.word))
 
 	def printYouWin(self):
@@ -224,7 +216,7 @@ class Hangman(object):
 			if self.gameEndStatus == 1:
 				self.printYouWin()
 			else:
-				self.printYouLoose()
+				self.printYouLose()
 			return
 
 
