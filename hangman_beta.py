@@ -4,32 +4,13 @@ class Hangman(object):
 	def __init__(self, interactive=False, max_lives=9, word=None):
 		self.interactive = interactive
 		self.alphabet = string.ascii_uppercase
-		if word == None:
-			self.word = self.getWord()
-		else:
-			self.word = word.upper()
-
-		self.visible_word = "".join(["_" for w in self.word])
-		self.guessed_characters = ''
 		self.max_lives = max_lives
-		self.lives = self.max_lives
-		self.finished = False
-
-		'''
-		userInputStatus:		0. Already Tried
-								1. Good guess
-								2. Wrong Guess
-								3. Wrong input
-
-		'''
-		self.userInputStatus = None
-
-		'''
-		gameEndStatus:			0. Loss
-								1. Win
-		'''		
-		self.gameEndStatus = None
-		self.guessed_character = None
+		if word != None:
+			self.word = self.word.upper()
+			self.word_provided = True
+		else:
+			self.word_provided = False
+		self.first_time = True
 
 	# Functional Functions
 	def getWord(self):
@@ -99,8 +80,38 @@ class Hangman(object):
 						self.gameEndStatus = 0
 
 	def play(self):
-		self.userInputStatus = 0
-		self.drawInterface()
+		if not self.word_provided:
+			self.word = self.getWord()
+
+		self.visible_word = "".join(["_" for w in self.word])
+		self.guessed_characters = ''
+		self.lives = self.max_lives
+		self.finished = False
+		self.play_again = None
+
+		'''
+		userInputStatus:		0. Already Tried
+								1. Good guess
+								2. Wrong Guess
+								3. Wrong input
+
+		'''
+		self.userInputStatus = None
+
+		'''
+		gameEndStatus:			0. Loss
+								1. Win
+		'''		
+		self.gameEndStatus = None
+		self.guessed_character = None
+
+		if self.first_time:
+			self.printWelcome()
+		self.printWordInfo()
+		self.first_time = False
+		self.printPlayWord()
+		self.printLine()
+
 		while not self.wordCompleted() and self.alive():
 			self.turn()
 
@@ -109,9 +120,23 @@ class Hangman(object):
 	
 	def alive(self):
 		return self.lives > 0
+
+	def willPlayAgain(self):
+		play_again = self.play_again.upper() == 'Y'
+		self.play_again = None
+		return play_again
+
 	# /Functional Functions
 
 	# Interactive Functions
+	def promptPlayAgain(self):
+		self.play_again = input('Do you want to play again?[y/N] ').upper()
+		if self.willPlayAgain():
+			self.play()
+		else:
+			if self.interactive:
+				self.printThanksForPlaying()
+
 	def promptInputUser(self):
 		self.guessed_character = input("Please guess a letter: ").upper()
 		if not self.validUserInput():
@@ -130,7 +155,11 @@ class Hangman(object):
 		print(u'          [ ' + '♥ '*self.lives + '  '*self.livesLost()+'] X {}'.format(self.lives))
 
 	def getWordInfo(self):
-		return "\n          How to play: \n            1. Enter alphabetical characters\n            2. Have fun!\n\n          I'm thinking of a word that is {} characters long...?\n\n".format(len(self.word))
+		if self.first_time:
+			s = "\n          How to play: \n            1. Enter alphabetical characters\n            2. Have fun!\n\n"
+		else:
+			s = ""
+		return s + "I'm thinking of a word that is {} characters long...?\n\n".format(len(self.word))
 
 	def printWordInfo(self):
 		print(self.getWordInfo())
@@ -185,7 +214,7 @@ class Hangman(object):
 "            \_/\___/ \__,_| |_|\___/|___/\___| \n")
 
 	def getWelcome(self):
-		print(
+		return(
 "           _    _      _                            _____     \n"
 "          | |  | |    | |                          |_   _|    \n"
 "          | |  | | ___| | ___ ___  _ __ ___   ___    | | ___  \n"
@@ -210,6 +239,12 @@ class Hangman(object):
 	def printYouWin(self):
 		print(self.YouWin())
 		print('           The word was {}'.format(self.word))
+
+	def getThanksForPlaying(self):
+		return('           Thanks for playing!')
+
+	def printThanksForPlaying(self):
+		print(self.getThanksForPlaying())
 			
 	def drawInterface(self):
 		if self.gameEndStatus != None:
@@ -217,8 +252,9 @@ class Hangman(object):
 				self.printYouWin()
 			else:
 				self.printYouLose()
+			self.printLine()
+			self.promptPlayAgain()
 			return
-
 
 		if self.guessed_character == None:
 			self.guessed_character_uppercase = ''
