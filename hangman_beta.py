@@ -154,7 +154,12 @@ class Hangman(object):
 
 	# Interactive Functions
 	def promptPlayAgain(self):
-		self.play_again = input('Do you want to play again?[y/N] ').upper()
+		try:
+			self.play_again = input('Do you want to play again?[y/N] ').upper()
+		except (EOFError, KeyboardInterrupt):
+			# Simulate wrong input
+			self.play_again = 'n'
+			
 		if self.willPlayAgain():
 			self.play()
 		else:
@@ -162,7 +167,12 @@ class Hangman(object):
 				self.printThanksForPlaying()
 
 	def promptInputUser(self):
-		self.guessed_character = input("Please guess a letter: ").upper()
+		try:
+			self.guessed_character = input("Please guess a letter: ").upper()
+		except (EOFError, KeyboardInterrupt):
+			# Simulate wrong input
+			self.guessed_character = '1'
+
 		if not self.validUserInput():
 			self.userInputStatus = 3
 
@@ -180,10 +190,14 @@ class Hangman(object):
 
 	def getWordInfo(self):
 		if self.first_time:
-			s = "\n          How to play: \n            1. Enter alphabetical characters\n            2. Have fun!\n\n"
+			s = """\n  How to play: 
+  1. On every turn you can guess an alphabetic character
+  2. The challenge is to guess the word before 9 incorrect guesses
+  3. After the game you have a chance to go for another round
+  4. Good luck & have fun!\n\n"""
 		else:
 			s = ""
-		return s + "I'm thinking of a word that is {} characters long...?\n\n".format(len(self.word))
+		return s + "I'm thinking of a word that is {} characters long...\n\n".format(len(self.word))
 
 	def printWordInfo(self):
 		print(self.getWordInfo())
@@ -246,7 +260,7 @@ class Hangman(object):
            \/  \/ \___|_|\___\___/|_| |_| |_|\___|   \_/\___/ 
                                                     
                                                     
-           _   _   ___   _   _ _____ ___  ___  ___   _   _   
+            _   _   ___   _   _ _____ ___  ___  ___   _   _   
            | | | | / _ \ | \ | |  __ \|  \/  | / _ \ | \ | |  
            | |_| |/ /_\ \|  \| | |  \/| .  . |/ /_\ \|  \| |  
            |  _  ||  _  || . ` | | __ | |\/| ||  _  || . ` |  
@@ -262,7 +276,7 @@ class Hangman(object):
 		print('           The word was {}'.format(self.word))
 
 	def getThanksForPlaying(self):
-		return('           Thanks for playing!')
+		return('\n           Thanks for playing!\n')
 
 	def printThanksForPlaying(self):
 		print(self.getThanksForPlaying())
