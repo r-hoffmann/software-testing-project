@@ -155,7 +155,7 @@ class Hangman(object):
 	# Interactive Functions
 	def promptPlayAgain(self):
 		try:
-			self.play_again = input('Do you want to play again?[y/N] ').upper()
+			self.play_again = input('Enter (y/Y) to play again, any other key to exit ').upper()
 		except (EOFError, KeyboardInterrupt):
 			# Simulate wrong input
 			self.play_again = 'n'
@@ -171,7 +171,7 @@ class Hangman(object):
 			self.guessed_character = input("Please guess a letter: ").upper()
 		except (EOFError, KeyboardInterrupt):
 			# Simulate wrong input
-			self.guessed_character = '1'
+			self.guessed_character = ''
 
 		if not self.validUserInput():
 			self.userInputStatus = 3
