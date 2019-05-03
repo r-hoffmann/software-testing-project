@@ -192,9 +192,10 @@ class Hangman(object):
 		if self.first_time:
 			s = """\n  How to play: 
   1. On every turn you can guess an alphabetic character
-  2. The challenge is to guess the word before 9 incorrect guesses
-  3. After the game you have a chance to go for another round
-  4. Good luck & have fun!\n\n"""
+  2. Every input is confirmed by pressing ENTER
+  3. The challenge is to guess the word before 9 incorrect guesses
+  4. After the game you have a chance to play again
+  5. Good luck & have fun!\n\n"""
 		else:
 			s = ""
 		return s + "I'm thinking of a word that is {} characters long...\n\n".format(len(self.word))
@@ -269,11 +270,14 @@ class Hangman(object):
 
 	def printYouLose(self):
 		print(self.getYouLose())
-		print('           The word was {}'.format(self.word))
+		# self.printTheActualWord()
 
 	def printYouWin(self):
 		print(self.getYouWin())
-		print('           The word was {}'.format(self.word))
+		# self.printTheActualWord()
+
+	def printTheActualWord(self):
+		print('           The word was: {}'.format(self.word))
 
 	def getThanksForPlaying(self):
 		return('\n           Thanks for playing!\n')
@@ -287,6 +291,7 @@ class Hangman(object):
 				self.printYouWin()
 			else:
 				self.printYouLose()
+			self.printTheActualWord()
 			self.printLine()
 			self.promptPlayAgain()
 			return
