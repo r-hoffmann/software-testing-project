@@ -6,11 +6,37 @@ class Hangman(object):
 		self.alphabet = string.ascii_uppercase
 		self.max_lives = max_lives
 		if word != None:
-			self.word = self.word.upper()
+			self.word = word.upper()
 			self.word_provided = True
 		else:
 			self.word_provided = False
 		self.first_time = True
+
+		# Initialize game
+		if not self.word_provided:
+			self.word = self.getWord()
+
+		self.visible_word = "".join(["_" for w in self.word])
+		self.guessed_characters = ''
+		self.lives = self.max_lives
+		self.finished = False
+		self.play_again = None
+
+		'''
+		userInputStatus:		0. Already Tried
+								1. Good guess
+								2. Wrong Guess
+								3. Wrong input
+
+		'''
+		self.userInputStatus = None
+
+		'''
+		gameEndStatus:			0. Loss
+								1. Win
+		'''		
+		self.gameEndStatus = None
+		self.guessed_character = None
 
 	# Functional Functions
 	def getWord(self):
@@ -43,7 +69,7 @@ class Hangman(object):
 	def updateVisibleWord(self):
 		self.visible_word = ''
 
-		for i, w in enumerate(self.word):
+		for w in self.word:
 			if w in self.guessed_characters:
 				self.visible_word += w
 			else:
@@ -123,9 +149,7 @@ class Hangman(object):
 
 	def willPlayAgain(self):
 		play_again = self.play_again.upper() == 'Y'
-		self.play_again = None
 		return play_again
-
 	# /Functional Functions
 
 	# Interactive Functions
@@ -195,49 +219,46 @@ class Hangman(object):
 			print("\n          [ " + ''.join([character.upper() + ' ' if character.isalpha() else '_ ' for character in list(self.guessed_characters)]) + "]")
 		print(self.getHangman())
 
-	def YouWin(self):
-		return(
-"          __   __                     _       \n"
-"          \ \ / /                    (_)      \n"
-"           \ V /___  _   _  __      ___ _ __  \n"
-"            \ // _ \| | | | \ \ /\ / / | '_ \ \n"
-"            | | (_) | |_| |  \ V  V /| | | | |\n"
-"            \_/\___/ \__,_|   \_/\_/ |_|_| |_|\n")
+	def getYouWin(self):
+		return(r"""          __   __                     _       
+          \ \ / /                    (_)      
+           \ V /___  _   _  __      ___ _ __  
+            \ // _ \| | | | \ \ /\ / / | '_ \ 
+            | | (_) | |_| |  \ V  V /| | | | |
+            \_/\___/ \__,_|   \_/\_/ |_|_| |_|
+			""")
 
 	def getYouLose(self):
-		return(
-"          __   __            _                 \n"
-"          \ \ / /           | |                \n"
-"           \ V /___  _   _  | | ___  ___  ___  \n"
-"            \ // _ \| | | | | |/ _ \/ __|/ _ \ \n"
-"            | | (_) | |_| | | | (_) \__ \  __/ \n"
-"            \_/\___/ \__,_| |_|\___/|___/\___| \n")
+		return(r"""          __   __            _                 
+          \ \ / /           | |                
+           \ V /___  _   _  | | ___  ___  ___  
+            \ // _ \| | | | | |/ _ \/ __|/ _ \ 
+            | | (_) | |_| | | | (_) \__ \  __/ 
+            \_/\___/ \__,_| |_|\___/|___/\___|
+			""")
 
 	def getWelcome(self):
-		return(
-"           _    _      _                            _____     \n"
-"          | |  | |    | |                          |_   _|    \n"
-"          | |  | | ___| | ___ ___  _ __ ___   ___    | | ___  \n"
-"          | |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \   | |/ _ \ \n"
-"          \  /\  /  __/ | (_| (_) | | | | | |  __/   | | (_) |\n"
-"           \/  \/ \___|_|\___\___/|_| |_| |_|\___|   \_/\___/ \n"
-                                                    "\n"
-                                                    "\n"
-"           _   _   ___   _   _ _____ ___  ___  ___   _   _   \n"
-"           | | | | / _ \ | \ | |  __ \|  \/  | / _ \ | \ | |  \n"
-"           | |_| |/ /_\ \|  \| | |  \/| .  . |/ /_\ \|  \| |  \n"
-"           |  _  ||  _  || . ` | | __ | |\/| ||  _  || . ` |  \n"
-"           | | | || | | || |\  | |_\ \| |  | || | | || |\  |  \n"
-"           \_| |_/\_| |_/\_| \_/\____/\_|  |_/\_| |_/\_| \_/  \n"
+		return(r"""           _    _      _                            _____     
+          | |  | |    | |                          |_   _|    
+          | |  | | ___| | ___ ___  _ __ ___   ___    | | ___  
+          | |/\| |/ _ \ |/ __/ _ \| '_ ` _ \ / _ \   | |/ _ \ 
+          \  /\  /  __/ | (_| (_) | | | | | |  __/   | | (_) |
+           \/  \/ \___|_|\___\___/|_| |_| |_|\___|   \_/\___/ 
                                                     
-		)
+                                                    
+           _   _   ___   _   _ _____ ___  ___  ___   _   _   
+           | | | | / _ \ | \ | |  __ \|  \/  | / _ \ | \ | |  
+           | |_| |/ /_\ \|  \| | |  \/| .  . |/ /_\ \|  \| |  
+           |  _  ||  _  || . ` | | __ | |\/| ||  _  || . ` |  
+           | | | || | | || |\  | |_\ \| |  | || | | || |\  |  
+           \_| |_/\_| |_/\_| \_/\____/\_|  |_/\_| |_/\_| \_/""")
 
 	def printYouLose(self):
 		print(self.getYouLose())
 		print('           The word was {}'.format(self.word))
 
 	def printYouWin(self):
-		print(self.YouWin())
+		print(self.getYouWin())
 		print('           The word was {}'.format(self.word))
 
 	def getThanksForPlaying(self):

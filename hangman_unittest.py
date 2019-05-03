@@ -70,7 +70,7 @@ class TestHangman(unittest.TestCase):
         self.assertTrue(hangman.finished)
         self.assertFalse(hangman.won)
         
-    def test_supply_feedback(self):
+    def test_feedback_on_user_input(self):
         for character in string.ascii_letters:
             with mock.patch('builtins.input', return_value=character):
                 hangman = Hangman(True, 9, 'hangman')
@@ -82,12 +82,50 @@ class TestHangman(unittest.TestCase):
                     self.assertTrue('Good guess!' in out)
                 else:
                     self.assertTrue('too bad' in out)
-        
-    def test_user_guesses_last_character(self):
-        pass
-        
-    def test_user_enters_invalid_character(self):
-        pass
+
+    def test_feedback_win(self):
+        hangman = Hangman(True, 9, 'hangman')
+        f = io.StringIO()
+        with redirect_stdout(f):
+            for character in 'hangm':
+                with mock.patch('builtins.input', return_value=character):
+                    hangman.turn()
+
+            # Simulate play again
+            with mock.patch('builtins.input', return_value='n'):
+                hangman.turn()
+        out = f.getvalue()
+
+        # All characters are valid
+        self.assertFalse('too bad' in out)
+
+        # You win is displayed
+        self.assertTrue(hangman.getYouWin() in out)
+
+        # Play again is asked
+        self.assertTrue(hangman.play_again != None)
+
+    def test_feedback_lose(self):
+        hangman = Hangman(True, 9, 'hangman')
+        f = io.StringIO()
+        with redirect_stdout(f):
+            for character in 'bcdefijkl':
+                with mock.patch('builtins.input', return_value=character):
+                    hangman.turn()
+
+            # Simulate play again
+            with mock.patch('builtins.input', return_value='n'):
+                hangman.turn()
+        out = f.getvalue()
+
+        # All characters are invalid
+        self.assertFalse('Good guess!' in out)
+
+        # You lose is displayed
+        self.assertTrue(hangman.getYouLose() in out)
+
+        # Play again is asked
+        self.assertTrue(hangman.play_again != None)
 
     def test_user_enters_multiple_characters(self):
         hangman = Hangman()
@@ -105,6 +143,26 @@ class TestHangman(unittest.TestCase):
         hangman.processInput()
         hangman.guessed_character = 'a'
         self.assertTrue(hangman.characterAlreadyGuessed())
-        
+
+    def test_user_plays_again_sets_same_word_when_provided(self):
+        hangman = Hangman(False, 9, 'hangman')
+        word_1 = hangman.word
+        hangman = Hangman(False, 9, 'hangman')
+        word_2 = hangman.word
+        self.assertTrue(word_1 == word_2)
+
+    def test_user_plays_again_sets_new_word_when_not_provided(self):
+        hangman = Hangman()
+        word_1 = hangman.word
+        hangman = Hangman()
+        word_2 = hangman.word
+        self.assertTrue(word_1 != word_2)
+    
+    def test_play_again_only_input_y_plays_again(self):
+        for character in string.printable:
+            hangman = Hangman()
+            hangman.play_again = character
+            self.assertEqual(hangman.willPlayAgain(), character.upper() == 'Y')
+
 if __name__ == '__main__':
     unittest.main()
