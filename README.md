@@ -1,4 +1,1 @@
-software-testing-project
-
-
-Old Hangman example of minor programmeren.
+Software Testing Project 2019
