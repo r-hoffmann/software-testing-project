@@ -4,11 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['hangman_beta.py'],
-<<<<<<< HEAD
-             pathex=['/home/roland/Python/software-testing-project'],
-=======
              pathex=['C:\\Users\\dirk_\\OneDrive\\Bureaublad\\CPS\\SWT\\software-testing-project'],
->>>>>>> 59809ceeea62e0cb40c147debbc65967879fd58c
              binaries=[],
              datas=[],
              hiddenimports=[],
