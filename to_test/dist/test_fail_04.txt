@@ -1,0 +1,12 @@
+config:
+{
+	"phones":10,
+	"nodes":1
+}
+
+problem: 
+Phone 0008 cannot call phone 0009, i.e. unconnected graph.
+
+call 0001 0008 OK
+call 0001 0009 OK
+call 0008 0009 Not OK

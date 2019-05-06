@@ -1,0 +1,5 @@
+call 0000 0001
+hangup 0001
+call 0001 0000
+call 0001 0002
+answer 0001
