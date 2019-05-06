@@ -284,16 +284,6 @@ class Hangman(object):
 		print(self.getThanksForPlaying())
 			
 	def drawInterface(self):
-		if self.gameEndStatus != None:
-			if self.gameEndStatus == 1:
-				self.printYouWin()
-			else:
-				self.printYouLose()
-			self.printTheActualWord()
-			self.printLine()
-			self.promptPlayAgain()
-			return
-
 		if self.guessed_character == None:
 			self.guessed_character_uppercase = ''
 		else:
@@ -317,6 +307,16 @@ class Hangman(object):
 		self.printPlayWord()
 		print()
 		self.printLine()
+
+		if self.gameEndStatus != None:
+			if self.gameEndStatus == 1:
+				self.printYouWin()
+			else:
+				self.printYouLose()
+			self.printTheActualWord()
+			self.printLine()
+			self.promptPlayAgain()
+			return
 	# /Interactive Functions
 	
 
