@@ -156,6 +156,7 @@ class Hangman(object):
 	def promptPlayAgain(self):
 		try:
 			self.play_again = input('Enter (y/Y) to play again, any other key to exit ').upper()
+			print()
 		except (EOFError, KeyboardInterrupt):
 			# Simulate wrong input
 			self.play_again = 'n'
@@ -191,11 +192,12 @@ class Hangman(object):
 	def getWordInfo(self):
 		if self.first_time:
 			s = """\n  How to play: 
-  1. On every turn you can guess an alphabetic character
-  2. Every input is confirmed by pressing ENTER
-  3. The challenge is to guess the word before 9 incorrect guesses
-  4. After the game you have a chance to play again
-  5. Good luck & have fun!\n\n"""
+  1. In this game you're trying to guess a word.
+  2. On every turn you can guess an alphabetic character that is part of the word.
+  3. Your confirm your input by pressing [ENTER].
+  4. The challenge is to guess all characters of the word before 9 incorrect guesses, or else you loose.
+  5. Don't worry if you loose! After this game you have a chance to play again.
+  6. Good luck & have fun!\n\n"""
 		else:
 			s = ""
 		return s + "I'm thinking of a word that is {} characters long...\n\n".format(len(self.word))
