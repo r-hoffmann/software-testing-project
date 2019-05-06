@@ -1,1 +1,0 @@
-mut.py --target hangman_beta --unit-test hangman_unittest -m

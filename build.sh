@@ -1,1 +1,0 @@
-pyinstaller --onefile hangman_beta.py
