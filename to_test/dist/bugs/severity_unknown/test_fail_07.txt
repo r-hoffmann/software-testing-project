@@ -1,0 +1,1 @@
+phone_malfunction denotes the phone as malfunctioned after there was some command involving it.

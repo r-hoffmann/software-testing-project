@@ -1,0 +1,54 @@
+Config:
+{
+	"phones":2,
+	"nodes":2
+}
+
+Commands:
+call 0000 0001
+phone_malfunction 0000
+phone_offline 0001
+
+Expected behaviour:
+Phone 0001 stops working and the connection between Phone 0000 and Phone 0001 is broken; Phone 0001 stops ringing and Phone 0000 stops dialing.
+
+Real behaviour:
+Phone 0001 stops ringing, but Phone 0000 keeps dialing.
+
+
+Full ouput:
+-----=====-----
+Node Node_0: available
+Node Node_1: available
+-----=====-----
+Phone 0000: ready
+Phone 0001: ready
+-----=====-----
+Command: 
+call 0000 0001
+-----=====-----
+Node Node_0: available
+Node Node_1: available
+-----=====-----
+Phone 0000: dialing 0001 through Node_1
+Phone 0001: ringing from 0000 through Node_1
+-----=====-----
+Command: 
+phone_malfunction 0000
+-----=====-----
+Node Node_0: available
+Node Node_1: available
+-----=====-----
+Phone 0000: dialing 0001 through Node_1
+Phone 0001: ready
+-----=====-----
+Command: 
+phone_offline 0001
+-----=====-----
+Node Node_0: available
+Node Node_1: available
+-----=====-----
+Phone 0000: dialing 0001 through Node_1
+Phone 0001: offline
+-----=====-----
+Command: 

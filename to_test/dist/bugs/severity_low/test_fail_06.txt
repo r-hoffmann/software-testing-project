@@ -1,0 +1,1 @@
+A command starting with a space does not get executed

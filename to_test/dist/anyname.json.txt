@@ -1,4 +1,4 @@
 {
-	"phones":10,
-	"nodes":1
+	"phones":2,
+	"nodes":2
 }

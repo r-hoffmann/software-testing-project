@@ -1,0 +1,86 @@
+config:
+{
+	"phones":2,
+	"nodes":2
+}
+
+
+Commands:
+call 0000 0001
+node_malfunction Node_1
+call 0000 0001
+
+
+
+Expected behaviour:
+Node_1 is offline, so phones should be connected through Node_0.
+
+
+
+Curreny behaviour:
+Node_1 is offline, but phones still connect through Node_1.
+
+Full output:
+-----=====-----
+Node Node_0: available
+Node Node_1: available
+-----=====-----
+Phone 0000: ready
+Phone 0001: ready
+-----=====-----
+Command: 
+call 0000 0001
+-----=====-----
+Node Node_0: available
+Node Node_1: available
+-----=====-----
+Phone 0000: dialing 0001 through Node_1
+Phone 0001: ringing from 0000 through Node_1
+-----=====-----
+Command: 
+node_malfunction Node_1
+-----=====-----
+Node Node_0: available
+Node Node_1: unavailable
+-----=====-----
+Phone 0000: ready
+Phone 0001: ready
+-----=====-----
+Command: 
+call 0000 0001
+-----=====-----
+Node Node_0: available
+Node Node_1: unavailable
+-----=====-----
+Phone 0000: dialing 0001 through Node_1
+Phone 0001: ringing from 0000 through Node_1
+-----=====-----
+Command: 
+answer Node_1
+There is no phone with address Node_1
+-----=====-----
+Node Node_0: available
+Node Node_1: unavailable
+-----=====-----
+Phone 0000: dialing 0001 through Node_1
+Phone 0001: ringing from 0000 through Node_1
+-----=====-----
+Command: 
+answer 000 
+There is no phone with address 000
+-----=====-----
+Node Node_0: available
+Node Node_1: unavailable
+-----=====-----
+Phone 0000: dialing 0001 through Node_1
+Phone 0001: ringing from 0000 through Node_1
+-----=====-----
+Command: 
+answer 0001
+-----=====-----
+Node Node_0: available
+Node Node_1: unavailable
+-----=====-----
+Phone 0000: calling 0001 through Node_1
+Phone 0001: calling 0000 through Node_1
+-----=====-----

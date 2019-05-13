@@ -1,5 +1,180 @@
 call 0000 0001
 hangup 0001
+call 0000 0002
+hangup 0002
+call 0000 0003
+hangup 0003
+call 0000 0004
+hangup 0004
+call 0000 0005
+hangup 0005
+call 0000 0006
+hangup 0006
+call 0000 0007
+hangup 0007
+call 0000 0008
+hangup 0008
+call 0000 0009
+hangup 0009
 call 0001 0000
+hangup 0000
 call 0001 0002
-answer 0001
+hangup 0002
+call 0001 0003
+hangup 0003
+call 0001 0004
+hangup 0004
+call 0001 0005
+hangup 0005
+call 0001 0006
+hangup 0006
+call 0001 0007
+hangup 0007
+call 0001 0008
+hangup 0008
+call 0001 0009
+hangup 0009
+call 0002 0000
+hangup 0000
+call 0002 0001
+hangup 0001
+call 0002 0003
+hangup 0003
+call 0002 0004
+hangup 0004
+call 0002 0005
+hangup 0005
+call 0002 0006
+hangup 0006
+call 0002 0007
+hangup 0007
+call 0002 0008
+hangup 0008
+call 0002 0009
+hangup 0009
+call 0003 0000
+hangup 0000
+call 0003 0001
+hangup 0001
+call 0003 0002
+hangup 0002
+call 0003 0004
+hangup 0004
+call 0003 0005
+hangup 0005
+call 0003 0006
+hangup 0006
+call 0003 0007
+hangup 0007
+call 0003 0008
+hangup 0008
+call 0003 0009
+hangup 0009
+call 0004 0000
+hangup 0000
+call 0004 0001
+hangup 0001
+call 0004 0002
+hangup 0002
+call 0004 0003
+hangup 0003
+call 0004 0005
+hangup 0005
+call 0004 0006
+hangup 0006
+call 0004 0007
+hangup 0007
+call 0004 0008
+hangup 0008
+call 0004 0009
+hangup 0009
+call 0005 0000
+hangup 0000
+call 0005 0001
+hangup 0001
+call 0005 0002
+hangup 0002
+call 0005 0003
+hangup 0003
+call 0005 0004
+hangup 0004
+call 0005 0006
+hangup 0006
+call 0005 0007
+hangup 0007
+call 0005 0008
+hangup 0008
+call 0005 0009
+hangup 0009
+call 0006 0000
+hangup 0000
+call 0006 0001
+hangup 0001
+call 0006 0002
+hangup 0002
+call 0006 0003
+hangup 0003
+call 0006 0004
+hangup 0004
+call 0006 0005
+hangup 0005
+call 0006 0007
+hangup 0007
+call 0006 0008
+hangup 0008
+call 0006 0009
+hangup 0009
+call 0007 0000
+hangup 0000
+call 0007 0001
+hangup 0001
+call 0007 0002
+hangup 0002
+call 0007 0003
+hangup 0003
+call 0007 0004
+hangup 0004
+call 0007 0005
+hangup 0005
+call 0007 0006
+hangup 0006
+call 0007 0008
+hangup 0008
+call 0007 0009
+hangup 0009
+call 0008 0000
+hangup 0000
+call 0008 0001
+hangup 0001
+call 0008 0002
+hangup 0002
+call 0008 0003
+hangup 0003
+call 0008 0004
+hangup 0004
+call 0008 0005
+hangup 0005
+call 0008 0006
+hangup 0006
+call 0008 0007
+hangup 0007
+call 0008 0009
+hangup 0009
+call 0009 0000
+hangup 0000
+call 0009 0001
+hangup 0001
+call 0009 0002
+hangup 0002
+call 0009 0003
+hangup 0003
+call 0009 0004
+hangup 0004
+call 0009 0005
+hangup 0005
+call 0009 0006
+hangup 0006
+call 0009 0007
+hangup 0007
+call 0009 0008
+hangup 0008

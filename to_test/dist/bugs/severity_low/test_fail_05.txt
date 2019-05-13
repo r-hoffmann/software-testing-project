@@ -1,0 +1,1 @@
+When a function is called without arguments, but multiple spaces we get an error which says that too many arguments have been submitted
