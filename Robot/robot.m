@@ -1,3 +1,21 @@
-for i = 1 : 10:
-    print(i)
-end
+%%
+myrobot = legoev3('usb'); 
+
+motor_left = motor(myrobot, 'A');
+motor_right = motor(myrobot, 'B');
+
+color_left = colorSensor(myrobot,1); 
+color_right = colorSensor(myrobot,3); 
+
+myUltrasonicSensor = sonicSensor(myrobot);
+%%
+
+forward(motor_left, motor_right, 10)
+stop(motor_left, motor_right, 0)
+left(motor_left, motor_right, 20, 3)
+right(motor_left, motor_right, 20, 3)
+
+[distance, col_left, col_right] = getSensors(myUltrasonicSensor, color_left, color_right);
+
+
+clear myrobot;
