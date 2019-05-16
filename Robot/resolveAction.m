@@ -1,31 +1,31 @@
-function action = resolveAction(myUltrasonicSensor, colorsensor_left, colorsensor_right)
-    [distance, color_left, color_right, color_reflected_left, color_reflected_right] = getSensors(myUltrasonicSensor, colorsensor_left, colorsensor_right);
-    
-    color_left
-    color_right
-    
-    if(color_left eq 'white' && color_right eq 'white')
+function action = resolveAction(color_left, color_right, color_reflected_left, color_reflected_right)
+    if(isWhite(color_left, color_reflected_left) && isWhite(color_right, color_reflected_right))
         action = 'forward';
         return;
     end
     
-    if(color_left eq 'white' && color_right eq 'white')
+    if(isGreen(color_left, color_reflected_left) && isGreen(color_right, color_reflected_right))
         action = 'fastForward';
         return;
     end
     
-    if(color_left eq 'grey' && color_right eq 'grey')
+    if(isGrey(color_left, color_reflected_left) && isGrey(color_right, color_reflected_right))
         action = 'slowForward';
         return;
     end
     
-    if(color_left eq 'white' && color_right~='white')
+    if(isWhite(color_left, color_reflected_left) && ~isWhite(color_right, color_reflected_right))
         action = 'right';
         return;
     end
     
-    if(color_left~='white' && color_right eq 'white')
+    if(~isWhite(color_left, color_reflected_left) && isWhite(color_right, color_reflected_right))
         action = 'left';
         return;
+    end
+
+    if(isPurple(color_left, color_reflected_left) && isPurple(color_right, color_reflected_right))
+        action = 'getParkingSpot';
+        return
     end
 end

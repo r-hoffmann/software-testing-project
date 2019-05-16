@@ -21,8 +21,8 @@ start(mB);
 mA.Speed = 0;
 mB.Speed = 0;
 
-myUltrasonicSensor = sonicSensor(myrobot);
-val = readDistance(myUltrasonicSensor);
+ultrasonic_sensor = sonicSensor(myrobot);
+val = readDistance(ultrasonic_sensor);
 display (val); 
 
 myColourSensor = colorSensor(myrobot,1); 
