@@ -1,6 +1,6 @@
 function isRed = isRed(color, color_reflected)
     isRed = false;
-    if(10 < color && color < 30)
+    if(color == "red" || color == "yellow" || color == "brown")
        isRed = true; 
     end
 end

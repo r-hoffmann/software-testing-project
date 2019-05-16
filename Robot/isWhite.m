@@ -1,6 +1,7 @@
 function isWhite = isWhite(color, color_reflected)
+    display(color)
     isWhite = false;
-    if(80 < color && color <= 100)
+    if(color == "white")
        isWhite = true; 
     end
 end

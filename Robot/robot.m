@@ -4,8 +4,12 @@ myrobot = legoev3('usb');
 motor_left = motor(myrobot, 'A');
 motor_right = motor(myrobot, 'B');
 
+start(motor_left);
+start(motor_right);
+
 color_left = colorSensor(myrobot,1); 
 color_right = colorSensor(myrobot,3); 
+
 
 ultrasonic_sensor = sonicSensor(myrobot);
 %%

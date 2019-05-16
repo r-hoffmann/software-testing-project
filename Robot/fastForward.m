@@ -1,3 +1,3 @@
-function [] = fastForward(motor_left, motor_right, speed)
-    forward(motor_left, motor_right, 100);
+function [] = fastForward(motor_left, motor_right, speed, multiplier)
+    forward(motor_left, motor_right, speed * multiplier);
 end
