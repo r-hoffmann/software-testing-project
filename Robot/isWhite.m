@@ -1,7 +1,6 @@
-function isWhite = isWhite(color, color_reflected)
-    display(color)
+function isWhite = isWhite(color, color_reflected, color_ambient)
     isWhite = false;
-    if(color == "white")
+    if(color_reflected >= 90)
        isWhite = true; 
     end
 end

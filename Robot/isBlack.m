@@ -1,7 +1,6 @@
-function isBlack = isBlack(color, color_reflected)
-    display(color)
-    isBlack = false;
-    if(color == "black" || color=="blue")
+function isBlack = isBlack(color, color_reflected, color_ambient)
+    isBlack = false;   
+    if(color_reflected < 25)
        isBlack = true; 
     end
 end
