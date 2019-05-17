@@ -1,7 +1,7 @@
-function [action] = doAction(action, motor_left, motor_right, ultrasonic_sensor)
-    speed = 10;
+function action = doAction(action, motor_left, motor_right, ultrasonic_sensor)
+    speed = 14;
     turn_speed = 30;
-    turntime = .11;
+    turntime = .3;
 
     switch action
         case 'terminate'
