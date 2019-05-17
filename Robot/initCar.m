@@ -1,4 +1,4 @@
-function [] = initCar()
+function [motor_left, motor_right, colorsensor_left, colorsensor_right, ultrasonic_sensor] = initCar()
     clear;
     myrobot = legoev3('usb'); 
 

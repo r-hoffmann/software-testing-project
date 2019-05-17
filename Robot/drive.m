@@ -1,4 +1,4 @@
-function [] = drive()
+function [] = drive(motor_left, motor_right, colorsensor_left, colorsensor_right, ultrasonic_sensor)
     %LOGS = []
     
     parked = 0;
@@ -17,7 +17,5 @@ function [] = drive()
      %  log = [color_left, color_ight, action, prev_action]
       % LOGS = [LOGS; log]
     end 
-    
-    stop_motors(motor_left, motor_right)
-    
+       
 end
