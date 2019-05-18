@@ -81,60 +81,18 @@ end
 function testIsWhite_Error(testCase)    
     testCase.verifyError(@()isWhite(libpointer, "INVALID INPUT", libpointer), 'MATLAB:string:ComparisonNotDefined') 
 end
+% ResolveAction
 
-% FORWARD
-function testForward(testCase)
-    motor_left = dummyMotor()
-    motor_right = dummyMotor()
-    
-    speed = 30
-    
-    forward(motor_left, motor_right, speed)
-    
-    testCase.verifyEqual(motor_left.Speed, speed)
-    testCase.verifyEqual(motor_right.Speed, speed)
-end
-
-
-% STOP
-% stop function (speed should both be zero)
+% Test stop function (speed should both be zero)
 function testStop(testCase)  
     motor_left = dummyMotor()
-    motor_right = dummyMotor()    
+    motor_right = dummyMotor()
     
     stop_motors(motor_left, motor_right)
-    
     testCase.verifyEqual(motor_left.Speed, 0)
     testCase.verifyEqual(motor_right.Speed, 0)
 end
 
-% LEFT
-function testLeft(testCase)  
-    motor_left = dummyMotor()
-    motor_right = dummyMotor()
-    
-    speed = 3
-    time = 1
-    
-    left(motor_left, motor_right, speed, time)
-    
-    testCase.verifyEqual(motor_left.Speed, 0)
-    testCase.verifyEqual(motor_right.Speed, 0)
-end
-
-% RIGHT
-function testRight(testCase)  
-    motor_left = dummyMotor()
-    motor_right = dummyMotor()
-    
-    speed = 3
-    time = 1
-    
-    left(motor_left, motor_right, speed, time)
-    
-    testCase.verifyEqual(motor_left.Speed, 0)
-    testCase.verifyEqual(motor_right.Speed, 0)
-end
 
 
 
