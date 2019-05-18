@@ -83,4 +83,20 @@ function testIsWhite_Error(testCase)
 end
 
 
+% ResolveAction
 
+% Stop because of distance
+function testResolveAction_Stop_Distance(testCase)  
+    actual = resolveAction(libpointer, libpointer, libpointer, libpointer, libpointer, libpointer, libpointer, 0.1, 3)
+    testCase.verifyEqual(actual, 'stop') 
+end
+
+function testResolveAction_Forward(testCase)  
+    actual = resolveAction(libpointer, libpointer, 24, 24, libpointer, libpointer, libpointer, 0.3, 1)
+    testCase.verifyEqual(actual, 'forward') 
+end
+% 
+
+
+
+    
