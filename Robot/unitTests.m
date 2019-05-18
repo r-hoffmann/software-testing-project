@@ -95,6 +95,21 @@ function testForward(testCase)
     testCase.verifyEqual(motor_right.Speed, speed)
 end
 
+% Obstacle in Range
+function testObstacleInRange_True(testCase)  
+    actual = obstacleInRange(.154, 3)
+    testCase.verifyEqual(actual, true)
+end
+
+function testObstacleInRange_False_Stage(testCase)  
+    actual = obstacleInRange(.154, 1)
+    testCase.verifyEqual(actual, false)
+end
+
+function testObstacleInRange_False_Distance(testCase)  
+    actual = obstacleInRange(.254, 3)
+    testCase.verifyEqual(actual, false)
+end
 
 % STOP
 % stop function (speed should both be zero)

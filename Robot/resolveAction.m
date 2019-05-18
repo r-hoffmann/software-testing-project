@@ -1,6 +1,6 @@
 function [action, stage] = resolveAction(color_left, color_right, color_reflected_left, color_reflected_right, color_ambient_left, color_ambient_right, prev_action, distance, stage)
 
-    if(distance <= .2 && stage == 3)
+    if(obstacleInRange(distance, stage))
        action = 'stop';
        return
     end
