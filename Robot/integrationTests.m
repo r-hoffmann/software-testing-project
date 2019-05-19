@@ -3,6 +3,8 @@ function tests = integrationTests
 end
 
 
+
+
 function test_tc1_1(testCase)
     motor_left = dummyMotor()
     motor_right = dummyMotor()
@@ -44,6 +46,19 @@ function test_tc1_3(testCase)
     testCase.verifyEqual(motor_right.Speed, 10)
 end
 
+function test_tc1_4(testCase)
+    motor_left = dummyMotor()
+    motor_right = dummyMotor()
+
+    action = resolveAction(libpointer, libpointer, 40, 40, libpointer, libpointer, libpointer, .3, libpointer)
+    testCase.verifyEqual(action, 'slowForward')
+        
+    doAction(action, motor_left, motor_right, libpointer, 3)
+    
+    testCase.verifyEqual(motor_left.Speed, 10)
+    testCase.verifyEqual(motor_right.Speed, 10)
+end
+
 % 
 function test_tc1_5(testCase)
     motor_left = dummyMotor()
@@ -57,6 +72,74 @@ function test_tc1_5(testCase)
     testCase.verifyEqual(motor_left.Speed, 0)
     testCase.verifyEqual(motor_right.Speed, 0)
 end
+
+
+
+
+function test_tc2_1(testCase)
+    motor_left = dummyMotor()
+    motor_right = dummyMotor()
+    
+%     Non-white; white
+    action = resolveAction(libpointer, libpointer, 101, 91, libpointer, libpointer, libpointer, .3, libpointer)
+    testCase.verifyEqual(action, 'left')        
+    doAction(action, motor_left, motor_right, libpointer, 3)
+    
+    testCase.verifyEqual(motor_left.Speed, 0)
+    testCase.verifyEqual(motor_right.Speed, 0)
+    
+%     Non-red; red
+    action2 = resolveAction(libpointer, libpointer, 101, 72, libpointer, libpointer, libpointer, .3, libpointer)
+    testCase.verifyEqual(action2, 'left')        
+    doAction(action2, motor_left, motor_right, libpointer, 3)
+    
+    testCase.verifyEqual(motor_left.Speed, 0)
+    testCase.verifyEqual(motor_right.Speed, 0)
+    
+%     Non-black; grey
+    action3 = resolveAction(libpointer, libpointer, 101, 40, libpointer, libpointer, libpointer, .3, libpointer)
+    testCase.verifyEqual(action3, 'left')        
+    doAction(action3, motor_left, motor_right, libpointer, 3)
+    
+    testCase.verifyEqual(motor_left.Speed, 0)
+    testCase.verifyEqual(motor_right.Speed, 0)   
+end
+
+function test_tc2_2(testCase)
+    motor_left = dummyMotor()
+    motor_right = dummyMotor()
+    
+%     Non-white; white
+    action = resolveAction(libpointer, libpointer, 91, 101, libpointer, libpointer, libpointer, .3, libpointer)
+    testCase.verifyEqual(action, 'right')        
+    doAction(action, motor_left, motor_right, libpointer, 3)
+    
+    testCase.verifyEqual(motor_left.Speed, 0)
+    testCase.verifyEqual(motor_right.Speed, 0)
+    
+%     Non-red; red
+    action2 = resolveAction(libpointer, libpointer, 72, 101, libpointer, libpointer, libpointer, .3, libpointer)
+    testCase.verifyEqual(action2, 'right')        
+    doAction(action2, motor_left, motor_right, libpointer, 3)
+    
+    testCase.verifyEqual(motor_left.Speed, 0)
+    testCase.verifyEqual(motor_right.Speed, 0)
+    
+%     grey; black
+    action3 = resolveAction(libpointer, libpointer, 40, 20, libpointer, libpointer, libpointer, .3, libpointer)
+    testCase.verifyEqual(action3, 'right')        
+    doAction(action3, motor_left, motor_right, libpointer, 3)
+    
+    testCase.verifyEqual(motor_left.Speed, 0)
+    testCase.verifyEqual(motor_right.Speed, 0)   
+end
+
+
+
+
+
+
+
 
 
 
