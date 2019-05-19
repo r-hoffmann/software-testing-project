@@ -8,6 +8,5 @@ function [isGrey, isPurple] = isGreyOrPurple(color, color_reflected, color_ambie
         else
             isGrey = true;
         end
-        
     end
 end
