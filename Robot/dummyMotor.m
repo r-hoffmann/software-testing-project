@@ -4,7 +4,7 @@ classdef dummyMotor < handle
    end
    methods
        function obj = dummyMotor
-            obj.Speed = 100;
+            obj.Speed = 0;
        end
    end
 end

@@ -43,20 +43,9 @@ function [action, stage] = resolveAction(color_left, color_right, color_reflecte
         return;
     end
     
- 
-    if(isWhite(color_left, color_reflected_left, color_ambient_left) & ~isWhite(color_right, color_reflected_right, color_ambient_right))
-        action = 'right';
-        return;
-    end
-    
-    if(~isWhite(color_left, color_reflected_left, color_ambient_left)& isWhite(color_right, color_reflected_right, color_ambient_right))
+%     LEFT:    
+    if(~isWhite(color_left, color_reflected_left, color_ambient_left) & isWhite(color_right, color_reflected_right, color_ambient_right))
         action = 'left';
-        return;
-    end
-    
-    
-    if(isRed(color_left, color_reflected_left, color_ambient_left) & ~isRed(color_right, color_reflected_right, color_ambient_right))
-        action = 'right';
         return;
     end
     
@@ -64,16 +53,30 @@ function [action, stage] = resolveAction(color_left, color_right, color_reflecte
         action = 'left';
         return;
     end
+    
+    if(~isBlack(color_left, color_reflected_left, color_ambient_left) & isGrey_right)
+        action = 'left';
+        return;
+    end
+    
+%     RIGHT:    
+    if(isRed(color_left, color_reflected_left, color_ambient_left) & ~isRed(color_right, color_reflected_right, color_ambient_right))
+        action = 'right';
+        return;
+    end
+    
+    if(isWhite(color_left, color_reflected_left, color_ambient_left) & ~isWhite(color_right, color_reflected_right, color_ambient_right))
+        action = 'right';
+        return;
+    end
+
 
     if(isGrey_left & isBlack(color_right, color_reflected_right, color_ambient_right))
         action = 'right';
         return;
     end
     
-    if(~isBlack(color_left, color_reflected_left, color_ambient_left) & isGrey_right)
-        action = 'left';
-        return;
-    end
+
     
     if(isPurple_left & isPurple_right)
         action = 'getParkingSpot';

@@ -2,8 +2,6 @@ function tests = unitTests
     tests = functiontests(localfunctions);
 end
 
-% LIBPOINTER is matlab equivalent to null object.
-
 % COLORS:
 
 % BLACK:
