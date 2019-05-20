@@ -113,9 +113,6 @@ class TestHangman(unittest.TestCase):
                 with mock.patch('builtins.input', return_value=character):
                     hangman.turn()
 
-            # Simulate play again
-            with mock.patch('builtins.input', return_value='n'):
-                hangman.turn()
         out = f.getvalue()
 
         # All characters are invalid

@@ -195,8 +195,8 @@ class Hangman(object):
   1. In this game you're trying to guess a word.
   2. On every turn you can guess an alphabetic character that is part of the word.
   3. Your confirm your input by pressing [ENTER].
-  4. The challenge is to guess all characters of the word before 9 incorrect guesses, or else you loose.
-  5. Don't worry if you loose! After this game you have a chance to play again.
+  4. The challenge is to guess all characters of the word before 9 incorrect guesses, or else you lose.
+  5. Don't worry if you lose! After this game you have a chance to play again.
   6. Good luck & have fun!\n\n"""
 		else:
 			s = ""
